@@ -1,8 +1,14 @@
-# Smart CCTV Owl 
-A T3chFlicks halloween special project.
-* Checkout the instructions and fun video [youtube](https://youtu.be/aLX4btGs_x8)
+# [T3chFlicks](https://t3chflicks.org): Smart Security Owl 
+> A Halloween special project.
  [![YOUTUBE_VIDEO](https://img.youtube.com/vi/aLX4btGs_x8/0.jpg)](https://www.youtube.com/watch?v=aLX4btGs_x8)
-* Checkout the instructional blog post [instructables](https://www.instructables.com/id/Smart-Security-Owl/)
+
+
+[![Generic badge](https://img.shields.io/badge/Blog_Post-Github-orange.svg)](./blog_post.md)
+
+[![Generic badge](https://img.shields.io/badge/Blog_Post-Medium-blue.svg)](https://t3chflicks.medium.com/zombie-detecting-smart-security-owl-deep-learning-e3f3c861dd6a)
+
+[![Generic badge](https://img.shields.io/badge/Youtube-Video-red.svg)](https://www.youtube.com/watch?v=aLX4btGs_x8)
+
 
 ## Code
 ### Tutorial
