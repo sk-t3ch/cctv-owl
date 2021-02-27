@@ -26,3 +26,9 @@ This is the complete working version of the code used.
 
 ### Assets
 This contains the extra files such as the owl hoot and deep learning models.
+
+---
+
+This project was created by [T3chFlicks](https://t3chflicks.org) - A tech focused education and services company.
+
+---
