@@ -9,9 +9,9 @@
 
 [![Generic badge](https://img.shields.io/badge/Youtube-Video-red.svg)](https://www.youtube.com/watch?v=aLX4btGs_x8)
 
-* Featured by [Adafruit Blogs](https://blog.adafruit.com/2019/12/06/zombie-detecting-smart-security-owl-piday-raspberrypi-raspberry_pi/)
+* 🎖️ Featured by [Adafruit Blogs](https://blog.adafruit.com/2019/12/06/zombie-detecting-smart-security-owl-piday-raspberrypi-raspberry_pi/)
 
-* Featured by [Push Notifications](https://pushed.co/blog/pushed-in-the-real-world-zombie-detecting-smart-security-owl)
+* 🎖️ Featured by [Push Notifications](https://pushed.co/blog/pushed-in-the-real-world-zombie-detecting-smart-security-owl)
 
 ## Code
 ### Tutorial
