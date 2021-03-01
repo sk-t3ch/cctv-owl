@@ -1,7 +1,6 @@
 # [T3chFlicks](https://t3chflicks.org): Smart Security Owl 
 > A Halloween special project.
  [![YOUTUBE_VIDEO](https://img.youtube.com/vi/aLX4btGs_x8/0.jpg)](https://www.youtube.com/watch?v=aLX4btGs_x8)
- [![Everything Is AWESOME](./yt.png)](https://www.youtube.com/watch?v=LnUSYzTdc5s&t=12 "Everything Is AWESOME")
 
 
 
@@ -10,6 +9,8 @@
 [![Generic badge](https://img.shields.io/badge/Blog_Post-Medium-blue.svg)](https://t3chflicks.medium.com/zombie-detecting-smart-security-owl-deep-learning-e3f3c861dd6a)
 
 [![Generic badge](https://img.shields.io/badge/Youtube-Video-red.svg)](https://www.youtube.com/watch?v=aLX4btGs_x8)
+
+ [![Everything Is AWESOME](./yt.png)](https://www.youtube.com/watch?v=aLX4btGs_x8 "Youtube Video")
 
 🎖️ Featured by [Adafruit Blogs](https://blog.adafruit.com/2019/12/06/zombie-detecting-smart-security-owl-piday-raspberrypi-raspberry_pi/)
 
