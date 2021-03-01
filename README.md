@@ -2,7 +2,6 @@
 > A Halloween special project [![YOUTUBE_VIDEO](./thumbnail.jpeg)](https://www.youtube.com/watch?v=aLX4btGs_x8)
 
 
-
 [![Generic badge](https://img.shields.io/badge/Blog_Post-Github-orange.svg)](./blog_post.md)
 
 [![Generic badge](https://img.shields.io/badge/Blog_Post-Medium-blue.svg)](https://t3chflicks.medium.com/zombie-detecting-smart-security-owl-deep-learning-e3f3c861dd6a)
@@ -16,17 +15,17 @@
 🎖️ Featured by [Push Notifications](https://pushed.co/blog/pushed-in-the-real-world-zombie-detecting-smart-security-owl)
 
 ## Code
-### Tutorial
+### `tutorials/`
 1. Move the owl head.
 2. Make the owl hoot!
 3. Stream the video feed.
 4. Run object detection on the stream.
 5. Notify your phone.
 
-### Src
+### `src/`
 This is the complete working version of the code used.
 
-### Assets
+### `assets/`
 This contains the extra files such as the owl hoot and deep learning models.
 
 ---
