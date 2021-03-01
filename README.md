@@ -1,6 +1,6 @@
 # [T3chFlicks](https://t3chflicks.org): Smart Security Owl 
-> A Halloween special project.
- [![YOUTUBE_VIDEO](https://img.youtube.com/vi/aLX4btGs_x8/0.jpg)](https://www.youtube.com/watch?v=aLX4btGs_x8)
+
+ [![YOUTUBE_VIDEO](./thumbnail.jpeg)](https://www.youtube.com/watch?v=aLX4btGs_x8)
 
 
 
