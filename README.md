@@ -1,6 +1,8 @@
 # [T3chFlicks](https://t3chflicks.org): Smart Security Owl 
 > A Halloween special project.
  [![YOUTUBE_VIDEO](https://img.youtube.com/vi/aLX4btGs_x8/0.jpg)](https://www.youtube.com/watch?v=aLX4btGs_x8)
+ [![Everything Is AWESOME](./yt.png)](https://www.youtube.com/watch?v=LnUSYzTdc5s&t=12 "Everything Is AWESOME")
+
 
 
 [![Generic badge](https://img.shields.io/badge/Blog_Post-Github-orange.svg)](./blog_post.md)
