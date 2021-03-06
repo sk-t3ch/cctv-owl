@@ -32,6 +32,17 @@ This contains the extra files such as the owl hoot and deep learning models.
 
 ---
 
+## 💡 Product Showcase
+> ![Product](./teaser.jpg)
+* Live stream camera
+* Rotatable head
+* Motion tracking
+* Night vision
+* Can make authentic owl hoot
+* Alerts to your phone
+
+---
+
 This project was created by [T3chFlicks](https://t3chflicks.org) - A tech focused education and services company.
 
 ---
