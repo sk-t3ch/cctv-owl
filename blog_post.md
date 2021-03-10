@@ -2,17 +2,11 @@
 
 In this Halloween tutorial, we’ll be showing you how we put a super spooky twist on a mundane household classic: the security camera. How?! We’ve made a night vision owl which uses image processing to track people. Oh, and it hoots, just like the real thing!
 
-<center><iframe width='560' height='315' src ='https://www.youtube.com/embed/$aLX4btGs_x8' frameborder='0' allowfullscreen></iframe></center>
+![](https://cdn-images-1.medium.com/max/2000/1*wPAxSaGBhkevta--OwnE0w.jpeg)
 
 We’ve been super excited about this project and we’ve been waiting to do it ever since the new Raspberry Pi 4 dropped. It’s got 4GB RAM, which opens the door to loads of really exciting possibilities, including doing some image processing with deep learning models in real time.
 
 If you want to keep an eye out for approaching zombies on Halloween, or just check your garden the rest of the year round, this is the one for you. Security doesn’t have to be boring to be effective!
-
-## Notes
-
-* [Video](https://youtu.be/aLX4btGs_x8)
-
-* [Code](https://github.com/sk-t3ch/cctv-owl)
 
 ## Supplies
 
@@ -37,10 +31,13 @@ For this build, you will need:
 * Large (5v+) portable power supply [Amazon](https://amzn.to/2BLTlCR)
 
 * 3D printer [Amazon](https://amzn.to/31NpuES)
+> # Play along with the code on [github](https://github.com/sk-t3ch/cctv-owl)
 
 ## Build 🛠️
 
-### 1. Decapitate
+<center><iframe width='560' height='315' src ='https://www.youtube.com/embed/$aLX4btGs_x8' frameborder='0' allowfullscreen></iframe></center>
+
+### Decapitate
 
 a. Pull the head off the owl (sometimes you just have to be brutal) by pulling hard on its head where it attaches to the spring.
 
@@ -64,7 +61,7 @@ e. Make a hole in the top of the owl’s body which is large enough to fit some 
 
 ![](https://cdn-images-1.medium.com/max/6720/1*78TkdVagBYkE4wa0D1l9_w.png)
 
-### 2. Add Smart 🧠
+### Add Smart 🧠
 
 a. 3D print the camera case and paint it to match the owl — we used some cheap acrylic paints. Painting isn’t a vital step, but it does dramatically improve the overall look!
 [**Raspberry Pi Night Vision Camera Mount IR CUT by Minims**
@@ -96,7 +93,7 @@ g. Screw the neck back together and push the head on.
 
 ![](https://cdn-images-1.medium.com/max/6720/1*2XX4iiSlH4VmQLdKKqd2Dg.png)
 
-### 3. Fill Her Up 🤖
+### Fill Her Up 🤖
 
 a. Remove the plug from the bottom of the owl and increase the size of this hole by cutting the plastic. Continue increasing the size until the Raspberry Pi and speaker can fit through into the body of the owl.
 
@@ -147,7 +144,7 @@ b. To access your pi remotely:
 
 c. Insert the SD card in the pi and try an access via ssh.
 
-### 5. Moving the Head ⚙️
+### Moving the Head ⚙️
 > **Code tutorial for moving the head (controlling a servo with a raspberry pi) — [github](https://github.com/sk-t3ch/cctv-owl/tree/master/tutorials/1_move_the_head)**
 
 To control a servo running on the Pi we are going to create script that controls the GPIO pins which the servo is connected to.
@@ -188,7 +185,7 @@ except KeyboardInterrupt:
     GPIO.cleanup()
 ```
 
-### 6. Making It Hoot 🔉
+### Making It Hoot 🔉
 > **Code tutorial for making the owl hoot (playing audio with a raspberry pi)-[github](https://github.com/sk-t3ch/cctv-owl/tree/master/tutorials/2_hoot)**
 
 a. Plug in the USB speaker.
@@ -216,7 +213,7 @@ player = subprocess.Popen(command.split(' '),
                           )
 ```
 
-### 7. Stream the Video From the Pi 🎦
+### Stream the Video From the Pi 🎦
 > **Code tutorial creating a raspberry pi camera stream — [github](https://github.com/sk-t3ch/cctv-owl/tree/master/tutorials/3_stream_video)**
 
 a. Run python `app.py` and view on your local network at `http://raspberrypi.local:5000` .
@@ -229,7 +226,7 @@ The camera works in both night and dark.
 
 ![](https://cdn-images-1.medium.com/max/6698/1*D5S6-jzJzmKUrjRQyIT03w.png)
 
-### 8. Body Detection 🕵️‍♀️
+### Body Detection 🕵️‍♀️
 > **Code for body detection(ImageNetSSD on a video stream with raspberry pi) — [github](https://github.com/sk-t3ch/cctv-owl/tree/master/tutorials/4_object_detection)**
 
 ![](https://cdn-images-1.medium.com/max/6702/1*_Emu1QthbTEOYYSG3kkroQ.png)
@@ -286,7 +283,7 @@ if detections is not None:
 
 ```
 
-### 9. Sending Zombie Notifications
+### Sending Zombie Notifications
 > **Code for sending a notification (python to phone) — [github](https://github.com/sk-t3ch/cctv-owl/tree/master/tutorials/5_send_notifications)**
 
 a. We decided to use [https://pushed.co ](https://pushed.co/)notification service.
@@ -311,7 +308,7 @@ r = requests.post("https://api.pushed.co/1/push", data=payload)
 
 ![](https://cdn-images-1.medium.com/max/6720/1*So_2fLRiOMjPpZrgRPK4ew.png)
 
-## Step 10: What a Hoot!
+### What a Hoot!
 
 We hope you enjoyed our Smart Security Owl project! This has been a super fun make and I feel a whole lot safer knowing my house is being guarded by our trusty owl. Checkout the [Youtube Video](https://youtu.be/aLX4btGs_x8).
 
