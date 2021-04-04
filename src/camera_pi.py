@@ -104,7 +104,7 @@ class Camera(BaseCamera):
                                 COLORS[idx], 2)
                             pwm = find_new_position(pwm, startX, endX)
 
-                yield cv2.imencode('.jpg', img)[1].tobytes()
+                yield cv2.imencode('.jpg', img)[1].tobytes(), pwm
 
                 # reset stream for next frame
                 stream.seek(0)
