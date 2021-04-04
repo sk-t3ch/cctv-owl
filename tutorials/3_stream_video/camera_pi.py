@@ -11,6 +11,7 @@ class Camera(BaseCamera):
     firstFrame = None
     @staticmethod
     def frames():
+        height, width = 300, 300
         firstFrame = None
         with picamera.PiCamera() as camera:
             # let camera warm up
@@ -20,8 +21,8 @@ class Camera(BaseCamera):
                                                use_video_port=True):
                 stream.seek(0)
                 img = stream.read()
-                img = np.array(img)
                 img = Image.open(stream)
+                img = np.array(img)
                 img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
                 yield cv2.imencode('.jpg', img)[1].tobytes()
