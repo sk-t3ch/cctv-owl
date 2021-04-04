@@ -11,10 +11,11 @@ import imutils
 from multiprocessing import Process
 from multiprocessing import Queue
 
-
+from classify_frame import classify_frame
+from make_sound import hoot
 import requests
 
-WIDTH=260
+WIDTH=180
 HEIGHT=240
 CLASSES = ["background", "aeroplane", "bicycle", "bird", "boat",
 	"bottle", "bus", "car", "cat", "chair", "cow", "diningtable",
@@ -24,16 +25,21 @@ COLORS = np.random.uniform(0, 255, size=(len(CLASSES), 3))
 net = cv2.dnn.readNetFromCaffe('../assets/MobileNetSSD_deploy.prototxt.txt',
                                '../assets/MobileNetSSD_deploy.caffemodel')
 
-def hoot():
-  command = "omxplayer -o alsa:hw:1,0 ../aseets/owl_sound.mp3 --vol 200".split(' ')
-  subprocess.Popen(command, 
-                  stdin=subprocess.PIPE, 
-                  stdout=subprocess.PIPE, 
-                  stderr=subprocess.PIPE
-                )
+inputQueue = Queue(maxsize=1)
+outputQueue = Queue(maxsize=1)
+detections = None
+
+p = Process(target=classify_frame, args=(net, inputQueue,
+	outputQueue,))
+p.daemon = True
+p.start()
+
+def scale(x, in_min, in_max, out_min, out_max):
+    return int((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min)
 
 def find_new_position(pwm, startX, endX):
-    half_width = WIDTH/2
+    height, width = 300, 300
+    half_width = width/2
     middle_of_feature = startX + ((endX-startX)/ 2)
     if (middle_of_feature > half_width): # if too far right
         pwm -= 0.5
@@ -50,6 +56,8 @@ class Camera(BaseCamera):
     firstFrame = None
     @staticmethod
     def frames():
+        height, width = 300, 300
+        pwm = 7.5 # ranges between 2.5 and 12.5
         firstFrame = None
         with picamera.PiCamera() as camera:
             # let camera warm up
