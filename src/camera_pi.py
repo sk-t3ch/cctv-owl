@@ -72,7 +72,7 @@ class Camera(BaseCamera):
                 img = np.array(img)
                 img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
                 
-                (fH, fW) = img.shape[:2]
+                (fH, fW) = (img.size[0], img.size[1])
                 if inputQueue.empty():
                     inputQueue.put(img)
 
