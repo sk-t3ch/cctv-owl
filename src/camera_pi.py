@@ -10,7 +10,6 @@ import cv2
 import imutils
 from multiprocessing import Process
 from multiprocessing import Queue
-from classify_frame import classify_frame
 
 from make_sound import hoot
 import requests
@@ -22,8 +21,8 @@ CLASSES = ["background", "aeroplane", "bicycle", "bird", "boat",
 	"dog", "horse", "motorbike", "person", "pottedplant", "sheep",
 	"sofa", "train", "tvmonitor"]
 COLORS = np.random.uniform(0, 255, size=(len(CLASSES), 3))
-net = cv2.dnn.readNetFromCaffe('../model/MobileNetSSD_deploy.prototxt.txt',
-                               '../MobileNetSSD_deploy.caffemodel')
+net = cv2.dnn.readNetFromCaffe('../assets/MobileNetSSD_deploy.prototxt.txt',
+                               '../assets/MobileNetSSD_deploy.caffemodel')
 
 
 def find_new_position(pwm, startX, endX):
@@ -84,7 +83,7 @@ class Camera(BaseCamera):
                             "target_type": "app",
                             "content": "Zombie approaching!"
                             }
-                            r = requests.post("https://api.pushed.co/1/push", data=payload)
+                            # r = requests.post("https://api.pushed.co/1/push", data=payload)
                             cv2.rectangle(img, (startX, startY), (endX, endY),
                                 COLORS[idx], 2)
                             pwm = find_new_position(pwm, startX, endX)
