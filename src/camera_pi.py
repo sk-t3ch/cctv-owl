@@ -68,11 +68,12 @@ class Camera(BaseCamera):
                 stream.seek(0)
                 img = stream.read()
                 img = Image.open(stream)
-                img = imutils.resize(img, width=WIDTH, height=HEIGHT)
                 img = np.array(img)
+                img = imutils.resize(img, width=WIDTH, height=HEIGHT)
                 img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
                 
-                (fH, fW) = (img.size[0], img.size[1])
+                (fH, fW) = img.shape[:2]
+                
                 if inputQueue.empty():
                     inputQueue.put(img)
 
