@@ -11,7 +11,7 @@ import imutils
 from multiprocessing import Process
 from multiprocessing import Queue
 
-from make_sound import hoot
+
 import requests
 
 WIDTH=260
@@ -24,6 +24,13 @@ COLORS = np.random.uniform(0, 255, size=(len(CLASSES), 3))
 net = cv2.dnn.readNetFromCaffe('../assets/MobileNetSSD_deploy.prototxt.txt',
                                '../assets/MobileNetSSD_deploy.caffemodel')
 
+def hoot():
+  command = "omxplayer -o alsa:hw:1,0 ../aseets/owl_sound.mp3 --vol 200".split(' ')
+  subprocess.Popen(command, 
+                  stdin=subprocess.PIPE, 
+                  stdout=subprocess.PIPE, 
+                  stderr=subprocess.PIPE
+                )
 
 def find_new_position(pwm, startX, endX):
     half_width = WIDTH/2
