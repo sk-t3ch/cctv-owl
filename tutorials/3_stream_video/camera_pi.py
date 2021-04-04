@@ -20,8 +20,8 @@ class Camera(BaseCamera):
                                                use_video_port=True):
                 stream.seek(0)
                 img = stream.read()
-                img = Image.open(stream)
                 img = np.array(img)
+                img = Image.open(stream)
                 img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
                 yield cv2.imencode('.jpg', img)[1].tobytes()

@@ -15,8 +15,8 @@ from classify_frame import classify_frame
 from make_sound import hoot
 import requests
 
-WIDTH=180
-HEIGHT=240
+# WIDTH=180
+# HEIGHT=240
 CLASSES = ["background", "aeroplane", "bicycle", "bird", "boat",
 	"bottle", "bus", "car", "cat", "chair", "cow", "diningtable",
 	"dog", "horse", "motorbike", "person", "pottedplant", "sheep",
