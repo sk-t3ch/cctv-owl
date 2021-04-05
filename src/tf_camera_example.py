@@ -102,7 +102,6 @@ def process_frame(frame):
     npframe = np.fromstring(frame, dtype=np.uint8)
     pil_frame = cv2.imdecode(npframe, cv2.CV_LOAD_IMAGE_COLOR)
     #pil_frame = cv2.imdecode(frame,-1)
-    pil_frame = imutils.resize(pil_frame, width=WIDTH, height=HEIGHT)
     frame_rgb = cv2.cvtColor(pil_frame, cv2.COLOR_BGR2RGB)
     # pil_im = Image.fromarray(frame_rgb)
 
