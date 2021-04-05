@@ -15,6 +15,70 @@ import time
 from threading import Thread
 import importlib.util
 
+WIDTH = 300
+HEIGHT = 300
+
+modeldir = "Sample_TFLite_model"
+graph = 'detect.tflite'
+labels = 'labelmap.txt'
+threshold = 0.5
+resolution = '1280x720'
+edgetpu = 'store_true'
+
+MODEL_NAME = modeldir
+GRAPH_NAME = graph
+LABELMAP_NAME = labels
+min_conf_threshold = float(threshold)
+resW, resH = resolution.split('x')
+imW, imH = int(resW), int(resH)
+use_TPU = edgetpu
+
+# Import TensorFlow libraries
+# If tflite_runtime is installed, import interpreter from tflite_runtime, else import from regular tensorflow
+# If using Coral Edge TPU, import the load_delegate library
+pkg = importlib.util.find_spec('tflite_runtime')
+if pkg:
+    from tflite_runtime.interpreter import Interpreter
+    if use_TPU:
+        from tflite_runtime.interpreter import load_delegate
+else:
+    from tensorflow.lite.python.interpreter import Interpreter
+    if use_TPU:
+        from tensorflow.lite.python.interpreter import load_delegate
+
+CWD_PATH = os.getcwd()
+PATH_TO_CKPT = os.path.join(CWD_PATH, MODEL_NAME, GRAPH_NAME)
+PATH_TO_LABELS = os.path.join(CWD_PATH, MODEL_NAME, LABELMAP_NAME)
+
+# Load the label map
+with open(PATH_TO_LABELS, 'r') as f:
+    labels = [line.strip() for line in f.readlines()]
+
+# First label is '???', which has to be removed.
+if labels[0] == '???':
+    del (labels[0])
+
+if use_TPU:
+    interpreter = Interpreter(
+        model_path=PATH_TO_CKPT,
+        experimental_delegates=[load_delegate('libedgetpu.so.1.0')])
+    print(PATH_TO_CKPT)
+else:
+    interpreter = Interpreter(model_path=PATH_TO_CKPT)
+
+interpreter.allocate_tensors()
+
+# Get model details
+input_details = interpreter.get_input_details()
+output_details = interpreter.get_output_details()
+height = input_details[0]['shape'][1]
+width = input_details[0]['shape'][2]
+
+floating_model = (input_details[0]['dtype'] == np.float32)
+
+input_mean = 127.5
+input_std = 127.5
+
 class BroadcastThread(Thread):
     def __init__(self, camera, output, websocket_server):
         super(BroadcastThread, self).__init__()
