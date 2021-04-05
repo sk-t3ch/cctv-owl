@@ -95,6 +95,7 @@ class BroadcastThread(Thread):
                 with self.output.condition:
                     self.output.condition.wait()
                     frame = self.output.frame
+                    print("FRAME: ", frame)
                     img = Image.open(frame)
                     img = np.array(img)
                     frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
