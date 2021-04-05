@@ -8,6 +8,8 @@ import cv2
 import traceback
 import numpy as np
 import datetime as dt
+import imutils
+
 
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
