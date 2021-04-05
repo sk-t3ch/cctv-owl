@@ -21,8 +21,8 @@ import time
 from threading import Thread
 import importlib.util
 
-WIDTH=300
-HEIGHT=300
+WIDTH = 300
+HEIGHT = 300
 
 modeldir = "Sample_TFLite_model"
 graph = 'detect.tflite'
@@ -53,8 +53,8 @@ else:
         from tensorflow.lite.python.interpreter import load_delegate
 
 CWD_PATH = os.getcwd()
-PATH_TO_CKPT = os.path.join(CWD_PATH,MODEL_NAME,GRAPH_NAME)
-PATH_TO_LABELS = os.path.join(CWD_PATH,MODEL_NAME,LABELMAP_NAME)
+PATH_TO_CKPT = os.path.join(CWD_PATH, MODEL_NAME, GRAPH_NAME)
+PATH_TO_LABELS = os.path.join(CWD_PATH, MODEL_NAME, LABELMAP_NAME)
 
 # Load the label map
 with open(PATH_TO_LABELS, 'r') as f:
@@ -62,11 +62,12 @@ with open(PATH_TO_LABELS, 'r') as f:
 
 # First label is '???', which has to be removed.
 if labels[0] == '???':
-    del(labels[0])
+    del (labels[0])
 
 if use_TPU:
-    interpreter = Interpreter(model_path=PATH_TO_CKPT,
-                              experimental_delegates=[load_delegate('libedgetpu.so.1.0')])
+    interpreter = Interpreter(
+        model_path=PATH_TO_CKPT,
+        experimental_delegates=[load_delegate('libedgetpu.so.1.0')])
     print(PATH_TO_CKPT)
 else:
     interpreter = Interpreter(model_path=PATH_TO_CKPT)
@@ -171,7 +172,7 @@ def detect_motion(frameCount):
                     (255, 255, 255), cv2.FILLED)
                 cv2.putText(frame_rgb, label, (xmin, label_ymin - 7),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2)
-		frame = frame_rgb
+                frame = frame_rgb
         # acquire the lock, set the output frame, and release the
         # lock
         with lock:
