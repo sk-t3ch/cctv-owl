@@ -156,7 +156,7 @@ def detect_motion(frameCount):
                 ymax = int(min(imH, (boxes[i][2] * imH)))
                 xmax = int(min(imW, (boxes[i][3] * imW)))
 
-                cv2.rectangle(frame_rgb, (xmin, ymin), (xmax, ymax),
+                cv2.rectangle(frame, (xmin, ymin), (xmax, ymax),
                               (10, 255, 0), 2)
 
                 object_name = labels[int(classes[i])]
@@ -167,12 +167,11 @@ def detect_motion(frameCount):
                                                       0.7, 2)
                 label_ymin = max(ymin, labelSize[1] + 10)
                 cv2.rectangle(
-                    frame_rgb, (xmin, label_ymin - labelSize[1] - 10),
+                    frame, (xmin, label_ymin - labelSize[1] - 10),
                     (xmin + labelSize[0], label_ymin + baseLine - 10),
                     (255, 255, 255), cv2.FILLED)
-                cv2.putText(frame_rgb, label, (xmin, label_ymin - 7),
+                cv2.putText(frame, label, (xmin, label_ymin - 7),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2)
-                frame = frame_rgb
         # acquire the lock, set the output frame, and release the
         # lock
         with lock:
