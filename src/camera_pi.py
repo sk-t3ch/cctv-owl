@@ -91,6 +91,7 @@ class Camera(BaseCamera):
                         box = detections[0, 0, i, 3:7] * dims
                         (startX, startY, endX, endY) = box.astype("int")
                         label = f"{CLASSES[idx]}: {confidence * 100}"
+                        print("LABEL :", label)
                         if CLASSES[idx] == "person":
                             hoot()
                             payload = {
