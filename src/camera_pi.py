@@ -37,14 +37,14 @@ p.start()
 def scale(x, in_min, in_max, out_min, out_max):
     return int((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min)
 
-def find_new_position(pwm, startX, endX):
+def find_new_position(pwm, startX, endX, budge_value):
     height, width = 300, 300
     half_width = width/2
     middle_of_feature = startX + ((endX-startX)/ 2)
     if (middle_of_feature > half_width): # if too far right
-        pwm -= 0.5
+        pwm -= budge_value
     else:
-        pwm += 0.5
+        pwm += budge_value
     # lock bounds
     if pwm > 12.5:
         pwm = 12.5
@@ -102,7 +102,8 @@ class Camera(BaseCamera):
                             # r = requests.post("https://api.pushed.co/1/push", data=payload)
                             cv2.rectangle(img, (startX, startY), (endX, endY),
                                 COLORS[idx], 2)
-                            pwm = find_new_position(pwm, startX, endX)
+                            budge_value = 0.1
+                            pwm = find_new_position(pwm, startX, endX, budge_value)
 
                 yield cv2.imencode('.jpg', img)[1].tobytes(), pwm
 
