@@ -49,7 +49,6 @@ import imutils
 import os
 import argparse
 import sys
-import time
 from threading import Thread
 import importlib.util
 
