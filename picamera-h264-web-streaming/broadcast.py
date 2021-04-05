@@ -14,6 +14,8 @@ import sys
 import time
 from threading import Thread
 import importlib.util
+from PIL import Image
+
 
 WIDTH = 300
 HEIGHT = 300
