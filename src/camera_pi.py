@@ -103,7 +103,7 @@ class Camera(BaseCamera):
                             # r = requests.post("https://api.pushed.co/1/push", data=payload)
                             cv2.rectangle(img, (startX, startY), (endX, endY),
                                 COLORS[idx], 2)
-                            budge_value = 0.2
+                            budge_value = 0.4
                             pwm = find_new_position(pwm, startX, endX, budge_value)
                             print("NEW PWM", pwm)
 
