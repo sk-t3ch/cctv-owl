@@ -105,6 +105,7 @@ class Camera(BaseCamera):
                                 COLORS[idx], 2)
                             budge_value = 0.2
                             pwm = find_new_position(pwm, startX, endX, budge_value)
+                            print("NEW PWM", pwm)
 
                 yield cv2.imencode('.jpg', img)[1].tobytes(), pwm
 
