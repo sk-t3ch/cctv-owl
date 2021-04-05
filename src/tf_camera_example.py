@@ -209,11 +209,11 @@ class StreamingServer(socketserver.ThreadingMixIn, HTTPServer):
 
 #with picamera.PiCamera(resolution='640x480', framerate=24) as camera:
 #with picamera.PiCamera(resolution='1920x1080', framerate=24) as camera:
-with picamera.PiCamera(resolution='320x240', framerate=2) as camera:
+with picamera.PiCamera(resolution='320x240', framerate=10) as camera:
     output = StreamingOutput()
     camera.start_recording(output, format='mjpeg')
-    camera.annotate_foreground = picamera.Color(y=0.2, u=0, v=0)
-    camera.annotate_background = picamera.Color(y=0.8, u=0, v=0)
+    # camera.annotate_foreground = picamera.Color(y=0.2, u=0, v=0)
+    # camera.annotate_background = picamera.Color(y=0.8, u=0, v=0)
     try:
         address = ('', 8000)
         server = StreamingServer(address, StreamingHandler)
