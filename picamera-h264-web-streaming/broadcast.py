@@ -97,9 +97,11 @@ class BroadcastThread(Thread):
                     self.output.condition.wait()
                     frame = self.output.frame
                     print("FRAME: ", frame)
-                    img = Image.open(BytesIO(frame))
-                    img = np.array(img)
-                    frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                    cv2.CV_LOAD_IMAGE_COLOR = 1  # set flag to 1 to give colour image
+                    npframe = np.fromstring(frame, dtype=np.uint8)
+                    pil_frame = cv2.imdecode(npframe, cv2.CV_LOAD_IMAGE_COLOR)
+                    #pil_frame = cv2.imdecode(frame,-1)
+                    frame_rgb = cv2.cvtColor(pil_frame, cv2.COLOR_BGR2RGB)
                     frame_resized = cv2.resize(frame_rgb, (width, height))
                     input_data = np.expand_dims(frame_resized, axis=0)
 
