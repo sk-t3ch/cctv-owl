@@ -103,24 +103,6 @@ def process_frame(frame):
     pil_frame = cv2.imdecode(npframe, cv2.CV_LOAD_IMAGE_COLOR)
     #pil_frame = cv2.imdecode(frame,-1)
     frame_rgb = cv2.cvtColor(pil_frame, cv2.COLOR_BGR2RGB)
-    # pil_im = Image.fromarray(frame_rgb)
-
-    # 
-    # (fH, fW) = cv2_im_rgb.shape[:2]
-
-    # blob = cv2.dnn.blobFromImage(cv2_im_rgb, 1/125, (300, 300), 127.5)
-    # net.setInput(blob)
-    # detections = net.forward()
-    # for i in np.arange(0, detections.shape[2]):
-    #     confidence = detections[0, 0, i, 2]
-    #     if confidence < 0.1:
-    #         continue
-    #     idx = int(detections[0, 0, i, 1])
-    #     dims = np.array([fW, fH, fW, fH])
-    #     box = detections[0, 0, i, 3:7] * dims
-    #     (startX, startY, endX, endY) = box.astype("int")
-    #     label = f"{CLASSES[idx]}: {confidence * 100}"
-    #     print("LABEL:", label)
     frame_resized = cv2.resize(frame_rgb, (width, height))
     input_data = np.expand_dims(frame_resized, axis=0)
 
@@ -132,18 +114,12 @@ def process_frame(frame):
     interpreter.set_tensor(input_details[0]['index'],input_data)
     interpreter.invoke()
 
-    # Retrieve detection results
-    boxes = interpreter.get_tensor(output_details[0]['index'])[0] # Bounding box coordinates of detected objects
-    classes = interpreter.get_tensor(output_details[1]['index'])[0] # Class index of detected objects
-    scores = interpreter.get_tensor(output_details[2]['index'])[0] # Confidence of detected objects
-    #num = interpreter.get_tensor(output_details[3]['index'])[0]  # Total number of detected objects (inaccurate and not needed)
-
-    # Loop over all detections and draw detection box if confidence is above minimum threshold
+    boxes = interpreter.get_tensor(output_details[0]['index'])[0] 
+    classes = interpreter.get_tensor(output_details[1]['index'])[0] 
+    scores = interpreter.get_tensor(output_details[2]['index'])[0] 
     for i in range(len(scores)):
         if ((scores[i] > min_conf_threshold) and (scores[i] <= 1.0)):
 
-            # Get bounding box coordinates and draw box
-            # Interpreter can return coordinates that are outside of image dimensions, need to force them to be within image using max() and min()
             ymin = int(max(1,(boxes[i][0] * imH)))
             xmin = int(max(1,(boxes[i][1] * imW)))
             ymax = int(min(imH,(boxes[i][2] * imH)))
@@ -151,52 +127,14 @@ def process_frame(frame):
             
             cv2.rectangle(frame_rgb, (xmin,ymin), (xmax,ymax), (10, 255, 0), 2)
 
-            # Draw label
-            object_name = labels[int(classes[i])] # Look up object name from "labels" array using class index
+            object_name = labels[int(classes[i])] 
             label = '%s: %d%%' % (object_name, int(scores[i]*100)) # Example: 'person: 72%'
-            labelSize, baseLine = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.7, 2) # Get font size
-            label_ymin = max(ymin, labelSize[1] + 10) # Make sure not to draw label too close to top of window
-            cv2.rectangle(frame_rgb, (xmin, label_ymin-labelSize[1]-10), (xmin+labelSize[0], label_ymin+baseLine-10), (255, 255, 255), cv2.FILLED) # Draw white box to put label text in
+            labelSize, baseLine = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.7, 2) 
+            label_ymin = max(ymin, labelSize[1] + 10)
+            cv2.rectangle(frame_rgb, (xmin, label_ymin-labelSize[1]-10), (xmin+labelSize[0], label_ymin+baseLine-10), (255, 255, 255), cv2.FILLED)
             cv2.putText(frame_rgb, label, (xmin, label_ymin-7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2) # Draw label text
 
     pil_im = Image.fromarray(frame_rgb)
-
-    draw = ImageDraw.Draw(pil_im)
-    # Choose a font
-    font = ImageFont.truetype(
-        "/usr/share/fonts/truetype/freefont/FreeSans.ttf", 25)
-    myText = "SkyWeather " + dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-
-    # Draw the text
-    color = 'rgb(255,255,255)'
-    #draw.text((0, 0), myText,fill = color, font=font)
-
-    # get text size
-    text_size = font.getsize(myText)
-
-    # set button size + 10px margins
-    button_size = (text_size[0] + 20, text_size[1] + 10)
-
-    # create image with correct size and black background
-    button_img = Image.new('RGBA', button_size, "black")
-
-    #button_img.putalpha(128)
-    # put text on button with 10px margins
-    button_draw = ImageDraw.Draw(button_img)
-    button_draw.text((10, 5), myText, fill=color, font=font)
-
-    pil_im.paste(button_img, (0, 0))
-    bg_w, bg_h = pil_im.size
-    # WeatherSTEM logo in lower left
-    size = 64
-    # WSLimg = Image.open("WeatherSTEMLogoSkyBackground.png")
-    # WSLimg.thumbnail((size,size),Image.ANTIALIAS)
-    # pil_im.paste(WSLimg, (0, bg_h-size))
-
-    # # SkyWeather log in lower right
-    # SWLimg = Image.open("SkyWeatherLogoSymbol.png")
-    # SWLimg.thumbnail((size,size),Image.ANTIALIAS)
-    # pil_im.paste(SWLimg, (bg_w-size, bg_h-size))
 
     # Save the image
     buf = io.BytesIO()
