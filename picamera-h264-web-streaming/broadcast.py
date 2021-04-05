@@ -15,6 +15,7 @@ import time
 from threading import Thread
 import importlib.util
 from PIL import Image
+from io import BytesIO
 
 
 WIDTH = 300
@@ -96,7 +97,7 @@ class BroadcastThread(Thread):
                     self.output.condition.wait()
                     frame = self.output.frame
                     print("FRAME: ", frame)
-                    img = Image.open(frame)
+                    img = Image.open(BytesIO(frame))
                     img = np.array(img)
                     frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                     frame_resized = cv2.resize(frame_rgb, (width, height))
