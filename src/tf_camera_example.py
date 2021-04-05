@@ -1,5 +1,4 @@
 import io
-import io
 import picamera
 import logging
 import socketserver
