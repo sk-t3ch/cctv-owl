@@ -91,14 +91,6 @@ def process_frame(frame):
     bg_w, bg_h = pil_im.size
     # WeatherSTEM logo in lower left
     size = 64
-    # WSLimg = Image.open("WeatherSTEMLogoSkyBackground.png")
-    # WSLimg.thumbnail((size,size),Image.ANTIALIAS)
-    # pil_im.paste(WSLimg, (0, bg_h-size))
-
-    # # SkyWeather log in lower right
-    # SWLimg = Image.open("SkyWeatherLogoSymbol.png")
-    # SWLimg.thumbnail((size,size),Image.ANTIALIAS)
-    # pil_im.paste(SWLimg, (bg_w-size, bg_h-size))
 
     # Save the image
     buf = io.BytesIO()
