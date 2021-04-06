@@ -42,12 +42,16 @@ def find_new_position(pwm, startX, endX, budge_value):
     height, width = PI_IMAGE_HEIGHT, PI_IMAGE_WIDTH
     half_width = width/2
     middle_of_feature = startX + ((endX-startX)/ 2)
-    if (middle_of_feature > half_width): # if too far right
+    middle_path = width/8
+    if (middle_of_feature > half_width + middle_path): #too far right
         pwm -= budge_value
         direction = 'left'
-    else:
+    elif (middle_of_feature < half_width - middle_path): #too far left
         pwm += budge_value
         direction = 'right'
+    else"
+        pwm = pwm
+        direction = 'none'
     # lock bounds
     if pwm > 12.5:
         pwm = 12.5
@@ -116,7 +120,8 @@ def detect_objects():
                     budge_value = 0.2
                     pwm, direction = find_new_position(pwm, box_left, box_right, budge_value)
                     print("NEW PWM", pwm)
-                    p.ChangeDutyCycle(pwm)
+                    if direction != 'none':
+                        p.ChangeDutyCycle(pwm)
                     cv2.putText(frame, f"PWM: {pwm}. {direction}", (50, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, box_color, 1)
 
         fps = round(1.0 / (time.time() - start_time), 0)
