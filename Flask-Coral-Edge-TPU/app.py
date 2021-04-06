@@ -117,7 +117,7 @@ def detect_objects():
                     pwm, direction = find_new_position(pwm, box_left, box_right, budge_value)
                     print("NEW PWM", pwm)
                     p.ChangeDutyCycle(pwm)
-                    cv2.putText(frame, f"PWM: {pwm}. {direction}", (10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, box_color, 1)
+                    cv2.putText(frame, f"PWM: {pwm}. {direction}", (50, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, box_color, 1)
 
         fps = round(1.0 / (time.time() - start_time), 0)
 
