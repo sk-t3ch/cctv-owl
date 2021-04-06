@@ -78,7 +78,7 @@ def detect_objects():
                 cv2.putText(frame, label_text, (label_left, label_bottom),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, label_text_color, 1)
 
-                if label_text == "person":
+                if labels[obj.label_id] == "person":
                     print("omg it's a person", box_left, box_right)
 
         fps = round(1.0 / (time.time() - start_time), 0)
