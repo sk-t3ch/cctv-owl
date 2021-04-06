@@ -1,7 +1,5 @@
 # Taken From https://blog.miguelgrinberg.com/post/flask-video-streaming-revisited 
 import os
-from flask import Flask, render_template, Response
-from camera_pi import Camera
 import time
 from imutils.video import VideoStream
 from flask import Flask, render_template, Response
