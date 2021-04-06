@@ -49,7 +49,7 @@ def find_new_position(pwm, startX, endX, budge_value):
     elif (middle_of_feature < half_width - middle_path): #too far left
         pwm += budge_value
         direction = 'right'
-    else"
+    else:
         pwm = pwm
         direction = 'none'
     # lock bounds
