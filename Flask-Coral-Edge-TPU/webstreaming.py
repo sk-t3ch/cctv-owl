@@ -39,7 +39,7 @@ def detect_objects():
 
         start_time = time.time()
         frame = vs.read()
-        frame = imutils.rotate(frame, angle=180)
+        # frame = imutils.rotate(frame, angle=180)
 
         prepimg = Image.fromarray(frame.copy())
 
