@@ -62,6 +62,7 @@ def index():
 def detect_objects():
 
     global cap, outputFrame, lock
+    pwm = 7.5
     p.start(7.5)
 
     while True:
