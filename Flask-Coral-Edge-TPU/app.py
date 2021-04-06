@@ -16,6 +16,7 @@ GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
 GPIO.setup(12, GPIO.OUT)
 p = GPIO.PWM(12, 50)
+pwm = 7.5
 
 
 box_color = (0, 0, 255)
