@@ -77,7 +77,7 @@ def detect_objects():
         prepimg = Image.fromarray(frame.copy())
 
         ans = engine.detect_with_image(prepimg,
-                                       threshold=0.4,
+                                       threshold=0.7,
                                        keep_aspect_ratio=True,
                                        relative_coord=False,
                                        top_k=10)
