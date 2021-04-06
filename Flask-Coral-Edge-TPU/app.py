@@ -111,7 +111,7 @@ def detect_objects():
 
                 if labels[obj.label_id] == "person":
                     print("omg it's a person", box_left, box_right)
-                    budge_value = 0.4
+                    budge_value = 0.1
                     pwm = find_new_position(pwm, box_left, box_right, budge_value)
                     print("NEW PWM", pwm)
                     p.ChangeDutyCycle(pwm)
