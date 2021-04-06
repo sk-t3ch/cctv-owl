@@ -118,9 +118,10 @@ def detect_objects():
                 if labels[obj.label_id] == "person":
                     print("omg it's a person", box_left, box_right)
                     budge_value = 0.2
+                    old_pwm = pwm
                     pwm, direction = find_new_position(pwm, box_left, box_right, budge_value)
                     print("NEW PWM", pwm)
-                    if direction != 'none':
+                    if direction != 'none' and abs(old_pwm - pwm) > 0:
                         p.ChangeDutyCycle(pwm)
                     cv2.putText(frame, f"PWM: {pwm}. {direction}", (50, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, box_color, 1)
 
