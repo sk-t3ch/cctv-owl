@@ -44,14 +44,16 @@ def find_new_position(pwm, startX, endX, budge_value):
     middle_of_feature = startX + ((endX-startX)/ 2)
     if (middle_of_feature > half_width): # if too far right
         pwm -= budge_value
+        direction = 'left'
     else:
         pwm += budge_value
+        direction = 'right'
     # lock bounds
     if pwm > 12.5:
         pwm = 12.5
     if pwm < 2.5:
         pwm = 2.5
-    return pwm
+    return pwm, direction
 
 
 @app.route("/")
@@ -112,9 +114,10 @@ def detect_objects():
                 if labels[obj.label_id] == "person":
                     print("omg it's a person", box_left, box_right)
                     budge_value = 0.2
-                    pwm = find_new_position(pwm, box_left, box_right, budge_value)
+                    pwm, direction = find_new_position(pwm, box_left, box_right, budge_value)
                     print("NEW PWM", pwm)
                     p.ChangeDutyCycle(pwm)
+                    cv2.putText(frame, f"PWM: {pwm}. {direction}", (10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, box_color, 1)
 
         fps = round(1.0 / (time.time() - start_time), 0)
 
