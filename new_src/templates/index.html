@@ -5,14 +5,24 @@
   <body>
     <h1>Coral Edge TPU Streamer</h1>
     <img src="{{ url_for('video_feed') }}">
-    <button onclick="updateConfig('person')">Get Persons</button>
-    <button onclick="updateConfig('banana')">Get Bananas</button>
+    <button onclick="updateConfig">Update Config</button>
+    <label for="label-select">Choose a Label:</label>
+    <select name="labels" id="label-select">
+        <option value="person">Person</option>
+        <option value="banana">Banana</option>
+        <option value="book">Book</option>
+        <option value="keyboard">Keyboard</option>
+        <option value="all">All</option>
+    </select>
+
   </body>
 
 <script>
 async function updateConfig(label) {
+  var labelSelector = document.getElementById("label-select");
+  var selectedLabel = labelSelector.value;
   const config = {
-    'selected_label': label,
+    'selected_label': selectedLabel,
     'selected_threshold': 0.7
   }
   const result = await fetch("{{ url_for('update_config') }}", {
