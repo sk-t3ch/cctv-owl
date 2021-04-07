@@ -125,7 +125,7 @@ def detect_objects():
 
         # ROTATE
         if shift_direction:
-            print("changing")
+            print("changing", shift_direction, shift_difference)
             pwm = determine_update_movement(pwm, shift_direction, shift_difference)
             p.ChangeDutyCycle(pwm)
         else:
