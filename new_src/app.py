@@ -1,7 +1,7 @@
 import os
 import time
 from imutils.video import VideoStream
-from flask import Flask, render_template, Response, request
+from flask import Flask, render_template, Response, request, jsonify
 from edgetpu.detection.engine import DetectionEngine
 from edgetpu.utils import dataset_utils
 import threading
@@ -98,7 +98,7 @@ def index():
 @app.route("/config", methods=['POST'])
 def updateConfig():
     print("REQUEST: ", request)
-    return { "data": [ { "name": "my name", "age": "27" } ] }
+    return jsonify(config)
 
 
 def detect_objects():
