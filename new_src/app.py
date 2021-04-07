@@ -55,7 +55,7 @@ def process_frame(frame, selected_label, selected_threshold=0.7):
                                        top_k=10)
     shift_difference, shift_direction = 0, 0 # To be removed after tracking
     if detections:
-        if selected_label !== "all":
+        if selected_label != "all":
             filtered_detections = list(filter(lambda obj: labels[obj.label_id]==selected_label, detections))
         else:
             filtered_detections = detections
