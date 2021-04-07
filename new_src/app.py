@@ -98,7 +98,7 @@ def index():
 @app.route("/config", methods=['POST'])
 def updateConfig():
     print("REQUEST: ", request)
-    return config
+    return { "data": [ { "name": "my name", age: "27" } ] }
 
 
 def detect_objects():
