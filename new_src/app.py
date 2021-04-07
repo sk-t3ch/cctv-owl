@@ -56,8 +56,11 @@ def process_frame(frame, selected_label, selected_threshold=0.7):
     shift_difference, shift_direction = 0, 0 # To be removed after tracking
     if detections:
         print(selected_label)
-        filtered_detections = filter(lambda obj: labels[obj.label_id]==selected_label, detections)
-        print(len(list(filtered_detections)))
+        banana = list(filter(lambda obj: obj.label_id == 51, detections))
+        print("BANANA", banana)
+        filtered_detections = list(filter(lambda obj: labels[obj.label_id]==selected_label, detections))
+        print(len(filtered_detections))
+
         for obj in filtered_detections:
             object_name = labels[obj.label_id]
             box = obj.bounding_box.flatten().tolist()
