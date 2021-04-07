@@ -97,6 +97,7 @@ def index():
 
 @app.route("/config", methods=['POST'])
 def update_config():
+    global config
     print("REQUEST: ", request)
     new_config = request.get_json()
     config = new_config
