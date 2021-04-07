@@ -32,6 +32,10 @@ labels = dataset_utils.read_label_file('./tpu/coco_labels.txt')
 # USER CONFIG
 selected_label = 'person'
 selected_threshold = 0.7
+config = {
+    'selected_label': selected_label,
+    'selected_threshold': selected_threshold
+}
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -94,7 +98,7 @@ def index():
 @app.route("/config", methods=['POST'])
 def config():
     print("REQUEST: ", request)
-    return 200, {}
+    return config
 
 
 def detect_objects():
