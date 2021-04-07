@@ -7,10 +7,11 @@ def determine_shift(frame_width, object_left, object_right):
     center_window = frame_width / 8
     difference = frame_center - object_center
     direction = math.copysign(1, difference)
+    abs_difference = abs(difference)
 
     print("DIFF: ", difference)
-    if difference > center_window:
-        return abs(difference), direction
+    if abs_difference > center_window:
+        return abs_difference, direction
     return 0, 0
 
 
