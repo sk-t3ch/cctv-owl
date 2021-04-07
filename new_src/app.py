@@ -98,14 +98,13 @@ def index():
 @app.route("/config", methods=['POST'])
 def update_config():
     print("REQUEST: ", request)
-    data = request.get_json()
-    if data["dog"] == "hi":
-        print("YEESSS")
+    new_config = request.get_json()
+    config = new_config
     return jsonify(config)
 
 
 def detect_objects():
-    global cap, outputFrame, lock, selected_label, selected_threshold
+    global cap, outputFrame, lock, config
     pwm = 7.5
     p.start(7.5)
 
@@ -114,7 +113,7 @@ def detect_objects():
         frame = vs.read()
 
         # TAG AND TRACK
-        frame, shift_difference, shift_direction = process_frame(frame, selected_label, selected_threshold)
+        frame, shift_difference, shift_direction = process_frame(frame, config["selected_label"], conifg["selected_threshold"])
 
         # print("#### ", shift_difference, shift_direction)
         # ROTATE
