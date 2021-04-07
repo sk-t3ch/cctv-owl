@@ -114,7 +114,7 @@ def update_config():
 def detect_objects():
     global cap, outputFrame, lock, config
     pwm = 7.5
-    p.start(7.5)
+    p.start(5)
 
     while True:
         start_time = time.time()
@@ -127,7 +127,7 @@ def detect_objects():
         if shift_direction:
             print("changing", shift_direction, shift_difference)
             pwm = determine_update_movement(pwm, shift_direction, shift_difference)
-            # p.ChangeDutyCycle(pwm)
+            p.ChangeDutyCycle(pwm)
         else:
             print("######")
         cv2.putText(frame, f"PWM: {pwm}. {shift_direction}", (
