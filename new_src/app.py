@@ -111,7 +111,7 @@ def detect_objects():
             pwm = determine_update_movement(pwm, shift_direction, shift_difference)
             p.ChangeDutyCycle(pwm)
         cv2.putText(frame, f"PWM: {pwm}. {shift_direction}", (
-                50, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, box_color, 1)
+                90, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, box_color, 1)
 
         # FPS
         fps = round(1.0 / (time.time() - start_time), 0)

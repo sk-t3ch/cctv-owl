@@ -21,6 +21,6 @@ def determine_update_movement(current_value, direction, magnitude=None):
     # TODO: use magnitude to make relative shift
     # direction: +1/-1 python truthies
     nudge_value = 0.2
-    new_value = current_value + nudge_value*direction
+    new_pwm = current_value + nudge_value*direction
     bounded_pwm = bound(2.5, 12.5, new_pwm)
     return bounded_pwm
