@@ -17,7 +17,7 @@ import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
 GPIO.setup(12, GPIO.OUT)
-p = GPIO.PWM(12, 50)
+p = GPIO.PWM(12, 1000)
 pwm = 7.5
 
 
