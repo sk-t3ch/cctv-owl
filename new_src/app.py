@@ -56,7 +56,7 @@ def process_frame(frame, selected_label, selected_threshold=0.7):
             box_right = int(box[2])
             box_bottom = int(box[3])
 
-            draw_label(frame, obj_name, box_left, box_top, box_right, box_bottom)
+            draw_label(frame, object_name, box_left, box_top, box_right, box_bottom)
             shift_difference, shift_direction = determine_shift(frame.shape[0], box_left, box_right)
 
     return frame, shift_difference, shift_direction
