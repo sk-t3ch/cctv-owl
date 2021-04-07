@@ -99,7 +99,8 @@ def index():
 def update_config():
     print("REQUEST: ", request)
     data = request.get_json()
-    print("data: ", data)
+    if data["dog"] == "hi":
+        print("YEESSS")
     return jsonify(config)
 
 
