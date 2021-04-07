@@ -57,15 +57,15 @@ def process_frame(frame, selected_label, selected_threshold=0.7):
             box_right = int(box[2])
             box_bottom = int(box[3])
 
-            draw_label(frame, object_name, box_left, box_top, box_right, box_bottom)
+            draw_label(frame, object_name, obj.score, box_left, box_top, box_right, box_bottom)
             shift_difference, shift_direction = determine_shift(frame.shape[0], box_left, box_right)
 
     return frame, shift_difference, shift_direction
 
-def draw_label(frame, obj_name, box_left, box_top, box_right, box_bottom):
+def draw_label(frame, obj_name, obj_score, box_left, box_top, box_right, box_bottom):
     cv2.rectangle(frame, (box_left, box_top),
                             (box_right, box_bottom), box_color, 1)
-    percentage = int(obj.score * 100)
+    percentage = int(obj_score * 100)
     label_text = obj_name + \
         " (" + str(percentage) + "%)"
     label_size = cv2.getTextSize(label_text,
