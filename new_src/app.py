@@ -34,7 +34,9 @@ selected_label = 'person'
 selected_threshold = 0.4
 config = {
     'selected_label': selected_label,
-    'selected_threshold': selected_threshold
+    'selected_threshold': selected_threshold,
+    'alert': False,
+    'hoot': False
 }
 
 app = Flask(__name__)
@@ -121,12 +123,13 @@ def detect_objects():
         # TAG AND TRACK
         frame, shift_difference, shift_direction = process_frame(frame, config["selected_label"], config["selected_threshold"])
 
-        # print("#### ", shift_difference, shift_direction)
         # ROTATE
         if shift_direction:
+            print("changing")
             pwm = determine_update_movement(pwm, shift_direction, shift_difference)
             p.ChangeDutyCycle(pwm)
-            # print("####p ", pwm)
+        else:
+            print("######")
         cv2.putText(frame, f"PWM: {pwm}. {shift_direction}", (
                 90, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, box_color, 1)
 

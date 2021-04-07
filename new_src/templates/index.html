@@ -39,13 +39,15 @@ async function updateConfig() {
   var selectedThreshold = thresholdSelector.value / 100;
   
   var hoot = document.getElementById("hoot");
-  console.log(hoot.checked)
+  var selectedHoot = hoot.checked
   var alertPhone = document.getElementById("alertPhone");
-  console.log(alertPhone.checked)
+  var selectedAlertPhone = alertPhone.checked
 
   const config = {
     'selected_label': selectedLabel,
-    'selected_threshold': selectedThreshold
+    'selected_threshold': selectedThreshold,
+    'alert': selectedAlertPhone,
+    'hoot': selectedHoot
   }
   console.log("CONFIG: ", config)
   const result = await fetch("{{ url_for('update_config') }}", {
