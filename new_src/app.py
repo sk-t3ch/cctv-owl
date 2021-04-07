@@ -10,6 +10,8 @@ import time
 import cv2
 from PIL import Image
 from utils import *
+from flask_cors import CORS, cross_origin
+
 
 import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BOARD)
