@@ -96,7 +96,7 @@ def index():
     return render_template("index.html")
 
 @app.route("/config", methods=['POST'])
-def config():
+def updateConfig():
     print("REQUEST: ", request)
     return config
 
@@ -113,12 +113,12 @@ def detect_objects():
         # TAG AND TRACK
         frame, shift_difference, shift_direction = process_frame(frame, selected_label, selected_threshold)
 
-        print("#### ", shift_difference, shift_direction)
+        # print("#### ", shift_difference, shift_direction)
         # ROTATE
         if shift_direction:
             pwm = determine_update_movement(pwm, shift_direction, shift_difference)
             p.ChangeDutyCycle(pwm)
-            print("####p ", pwm)
+            # print("####p ", pwm)
         cv2.putText(frame, f"PWM: {pwm}. {shift_direction}", (
                 90, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, box_color, 1)
 
