@@ -88,7 +88,7 @@ def index():
     return render_template("index.html")
 
 @app.route("/config", methods=['POST'])
-def index(request):
+def config(request):
     print("REQUEST: ", request)
     return 200, {}
 
