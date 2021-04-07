@@ -40,7 +40,8 @@ vs = VideoStream(usePiCamera=True, resolution=(PI_IMAGE_WIDTH, PI_IMAGE_HEIGHT))
 time.sleep(2.0)
 
 def process_frame(frame, selected_label, selected_threshold=0.7):
-    detections = engine.detect_with_image(frame,
+    prep_img = Image.fromarray(frame.copy())
+    detections = engine.detect_with_image(prep_img,
                                        threshold=selected_threshold,
                                        keep_aspect_ratio=True,
                                        relative_coord=False,
@@ -101,11 +102,9 @@ def detect_objects():
     while True:
         start_time = time.time()
         frame = vs.read()
-        # frame = imutils.rotate(frame, angle=180)
-        prep_img = Image.fromarray(frame.copy())
 
         # TAG AND TRACK
-        frame, shift_difference, shift_direction = process_frame(prep_img, selected_label, selected_threshold)
+        frame, shift_difference, shift_direction = process_frame(frame, selected_label, selected_threshold)
 
         # ROTATE
         if shift_direction:
