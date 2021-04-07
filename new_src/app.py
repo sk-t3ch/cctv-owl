@@ -98,6 +98,8 @@ def index():
 @app.route("/config", methods=['POST'])
 def update_config():
     print("REQUEST: ", request)
+    data = request.get_json()
+    print("data: ", data)
     return jsonify(config)
 
 
