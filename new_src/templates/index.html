@@ -5,12 +5,14 @@
   <body>
     <h1>Coral Edge TPU Streamer</h1>
     <img src="{{ url_for('video_feed') }}">
-    <button onclick="doThing">CLICK ME</button>
+    <button onclick="myFunction()">Click me</button>
+
+<p id="demo"></p>
   </body>
 
 <script>
-  function doThing(){
-    console.log("HIIII")
-  }
+function myFunction() {
+  document.getElementById("demo").innerHTML = "Hello World";
+}
 </script>
 </html>
