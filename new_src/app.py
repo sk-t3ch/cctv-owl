@@ -31,7 +31,7 @@ labels = dataset_utils.read_label_file('./tpu/coco_labels.txt')
 
 # USER CONFIG
 selected_label = 'person'
-selected_threshold = 0.7
+selected_threshold = 0.4
 config = {
     'selected_label': selected_label,
     'selected_threshold': selected_threshold
