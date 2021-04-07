@@ -1,7 +1,7 @@
 import os
 import time
 from imutils.video import VideoStream
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, Response, request
 from edgetpu.detection.engine import DetectionEngine
 from edgetpu.utils import dataset_utils
 import threading
@@ -34,6 +34,7 @@ selected_label = 'person'
 selected_threshold = 0.7
 
 app = Flask(__name__)
+cors = CORS(app)
 
 PI_IMAGE_WIDTH = 320
 PI_IMAGE_HEIGHT = 240
@@ -91,7 +92,7 @@ def index():
     return render_template("index.html")
 
 @app.route("/config", methods=['POST'])
-def config(request):
+def config():
     print("REQUEST: ", request)
     return 200, {}
 
