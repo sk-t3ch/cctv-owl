@@ -39,9 +39,9 @@ async function updateConfig() {
   var selectedThreshold = thresholdSelector.value / 100;
   
   var hoot = document.getElementById("hoot");
-  console.log(hoot.value)
+  console.log(hoot.checked)
   var alertPhone = document.getElementById("alertPhone");
-  console.log(alertPhone.value)
+  console.log(alertPhone.checked)
 
   const config = {
     'selected_label': selectedLabel,
