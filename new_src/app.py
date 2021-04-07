@@ -57,7 +57,7 @@ def process_frame(frame, selected_label, selected_threshold=0.7):
     if detections:
         print(selected_label)
         filtered_detections = filter(lambda obj: labels[obj.label_id]==selected_label, detections)
-        print(len(filtered_detections))
+        print(len(list(filtered_detections)))
         for obj in filtered_detections:
             object_name = labels[obj.label_id]
             box = obj.bounding_box.flatten().tolist()
