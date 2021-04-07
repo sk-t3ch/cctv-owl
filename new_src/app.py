@@ -17,7 +17,7 @@ import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
 GPIO.setup(12, GPIO.OUT)
-p = GPIO.PWM(12, 500)
+p = GPIO.PWM(12, 100)
 pwm = 7.5
 
 
@@ -127,8 +127,10 @@ def detect_objects():
         if shift_direction:
             print("changing", shift_direction, shift_difference)
             pwm = determine_update_movement(pwm, shift_direction, shift_difference)
+            p.start(pwm)
             p.ChangeDutyCycle(pwm)
         else:
+            p.stop()
             print("######")
         cv2.putText(frame, f"PWM: {pwm}. {shift_direction}", (
                 90, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, box_color, 1)
