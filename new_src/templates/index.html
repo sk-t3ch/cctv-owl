@@ -12,7 +12,10 @@
 async function getConfig() {
   const result = await fetch("{{ url_for('update_config') }}", {
     method: 'POST',
-    body: JSON.stringify({dog: 'hi'})
+    body: JSON.stringify({dog: 'hi'}),
+    headers: {
+      'Content-Type': 'application/json'
+    }
   }).then(resp => resp.json())
   console.log(result)
 }
