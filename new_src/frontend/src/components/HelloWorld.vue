@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fill-height>
     <v-row class="text-center">
       <v-col class="mb-4">
         <v-card class="brown" dark>
@@ -11,20 +11,20 @@
               <v-card class="ma-2">
                 <v-card-title> Labels </v-card-title>
                 <v-card-text>
-                  <v-select :items="['items']" label="Standard"></v-select>
+                  <v-select :items="labels" v-model="config['label']" label="Standard"></v-select>
                 </v-card-text>
               </v-card>
               <v-card class="ma-2">
                 <v-card-title> Certainty </v-card-title>
                 <v-card-text>
-                  <v-slider hint="Im a hint" max="100" min="0"></v-slider>
+                  <v-slider v-model="config['threshold']" hint="Im a hint" max="100" min="0"></v-slider>
                 </v-card-text>
               </v-card>
             </v-col>
             <v-spacer />
-            <v-col cols="6" class="my-4">
+            <v-col cols="5" class="my-4">
               <v-img
-                :src="require('../assets/logo.jpg')"
+                :src="video_feed_url"
                 style="overflow: unset"
               >
                 <div class="left"></div>
@@ -37,8 +37,9 @@
                 <v-card-title> Tracking </v-card-title>
                 <v-card-text>
                   <v-select
-                    :items="['single', 'maximise']"
+                    :items="tracking"
                     label="Standard"
+                    v-model="config['tracking']"
                   ></v-select>
                 </v-card-text>
               </v-card>
@@ -46,8 +47,8 @@
               <v-card class="ma-2">
                 <v-card-title> Actions </v-card-title>
                 <v-card-text>
-                  <v-checkbox label="Hoot"></v-checkbox>
-                  <v-checkbox label="Alert"></v-checkbox>
+                  <v-checkbox v-model="config['hoot']" label="Hoot"></v-checkbox>
+                  <v-checkbox v-model="config['alert']" label="Alert"></v-checkbox>
                 </v-card-text>
               </v-card>
             </v-col>
@@ -62,8 +63,50 @@
 export default {
   name: "HelloWorld",
   data() {
-    return {};
+    return {
+      labels: [
+        'person',
+        'bird',
+        'book',
+        'dog',
+        'all'
+      ],
+      tracking: [
+        'single',
+        'maximise'
+      ],
+      config: {
+        label: 'person',
+        tracking: 'single',
+        threshold: 70,
+        hoot: false,
+        alert: false
+      },
+      video_feed_url: `http://raspberrypi.local:5000/video_feed`,
+      update_config_url: `http://raspberrypi.local:5000/update_config`
+    };
   },
+  watch: {
+    config: {
+      deep: true,
+      handler() {
+        console.log("updating config")
+        this.updateConfig()
+      }
+    }
+  },
+  methods: {
+    async updateConfig(){
+      const result = await fetch(this.update_config_url, {
+        method: 'POST',
+        body: JSON.stringify(this.config),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(resp => resp.json())
+      console.log(result)
+    }
+  }
 };
 </script>
 <style scoped>
@@ -73,21 +116,19 @@ export default {
   float: left;
   height: 100%;
   width: 50%;
-  /* border: 1px solid; uncomment to see that they aren't overlapped */
   z-index: -100;
-  margin-top: -22px;
-  margin-bottom: -22px;
+  margin-top: -5%;
+  margin-bottom: -5%;
 }
 .left:after,
 .right:after {
   position: absolute;
   content: "";
   background: black;
-  height: calc(110%); /* 12px because of 6px border on either side */
-  width: calc(130%); /* 12px because of 6px border on either side */
+  height: calc(110%); 
+  width: calc(130%);
   border-radius: 25%;
   border: 3px solid white;
-  z-index: -100;
 }
 .left:after {
   right: -15%;

@@ -19,12 +19,9 @@ Taken From:
      sudo apt-get install libqt4-test
   ```
 1. `python3 app.py`
-<<<<<<< HEAD
 
 ### References
 
 * [https://coral.ai/docs](https://coral.ai/docs)
 * [https://www.pyimagesearch.com/2019/09/02/opencv-stream-video-to-web-browser-html-page](https://www.pyimagesearch.com/2019/09/02/opencv-stream-video-to-web-browser-html-page/)
 * [https://github.com/PINTO0309/TPU-MobilenetSSD](https://github.com/PINTO0309/TPU-MobilenetSSD)
-=======
->>>>>>> a674f50162e377bcfd364d06faca2e5ed851b612

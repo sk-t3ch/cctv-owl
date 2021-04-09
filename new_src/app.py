@@ -37,7 +37,9 @@ config = {
     'tracking': 'maximise'
 }
 
-app = Flask(__name__)
+app = Flask(__name__,
+            static_folder = "./frontend/static",
+            template_folder = "./frontend")
 cors = CORS(app)
 
 PI_IMAGE_WIDTH = 320
@@ -95,10 +97,6 @@ def draw_label(frame, obj_name, obj_score, box_left, box_top, box_right, box_bot
     cv2.putText(frame, label_text, (label_left, label_bottom),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, label_text_color, 1)
 
-
-@app.route("/")
-def index():
-    return render_template("index.html")
 
 @app.route("/config", methods=['POST'])
 def update_config():
@@ -160,6 +158,11 @@ def video_feed():
     return Response(generate(),
                     mimetype="multipart/x-mixed-replace; boundary=frame")
 
+
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def index():
+    return render_template("index.html")
 
 if __name__ == '__main__':
     t = threading.Thread(target=detect_objects)
