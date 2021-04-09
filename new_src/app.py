@@ -1,7 +1,7 @@
 import os
 import time
 from imutils.video import VideoStream
-from flask import Flask, render_template, Response, request, jsonify
+from flask import Flask, render_template, Response, request, jsonify, redirect, url_for
 from edgetpu.detection.engine import DetectionEngine
 from edgetpu.utils import dataset_utils
 import threading
@@ -39,7 +39,10 @@ config = {
 
 app = Flask(__name__,
             static_folder = "./frontend/dist/static",
-            template_folder = "./frontend/dist")
+            template_folder = "./frontend/dist"
+            )
+
+
 cors = CORS(app)
 
 PI_IMAGE_WIDTH = 320
@@ -159,21 +162,31 @@ def video_feed():
                     mimetype="multipart/x-mixed-replace; boundary=frame")
 
 
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def index(path):
-    if app.debug:
-        return requests.get('http://localhost:5000/{}'.format(path)).text
+# @app.route('/', defaults={'path': ''})
+# @app.route('/<path:path>')
+# def index(path):
+# #     # if app.debug:
+# #     #     return requests.get('http://localhost:5000/{}'.format(path)).text
+#     return render_template("index.html")
+@app.route('/')
+def index():
     return render_template("index.html")
 
+# @app.route('/')
+# def hello_world():
+#     # return redirect(url_for('static', filename='index.html'))
+#     return redirect(url_for('static', filename='index.html'))
+
+
 if __name__ == '__main__':
-    t = threading.Thread(target=detect_objects)
-    t.daemon = True
-    t.start()
+    # t = threading.Thread(target=detect_objects)
+    # t.daemon = True
+    # t.start()
+    app.debug = True
     app.run(host='0.0.0.0',
             port=5000,
-            debug=True,
+            debug=False,
             threaded=True,
             use_reloader=False)
 
-vs.stop()
+# vs.stop()
