@@ -22,6 +22,14 @@
         <label for="threshold">Threshold</label>
       </div>
       <div>
+        <h3>Tracking</h3>
+        <label for="tracking-select">Choose a tracking method</label>
+        <select name="tracking" id="tracking-select">
+          <option value="target">Target</option>
+          <option value="maximise">Maximise</option>
+        </select>
+      </div>
+      <div>
         <h3>Actions</h3>
         <input type="checkbox" id="hoot" name="hoot">
         <label for="hoot">Hoot</label><br>
@@ -43,6 +51,8 @@
 
 <script>
 async function updateConfig() {
+  var trackingSelector = document.getElementById("tracking-select");
+  var selectedTracking = trackingSelector.value;
   var labelSelector = document.getElementById("label-select");
   var selectedLabel = labelSelector.value;
   var thresholdSelector = document.getElementById("threshold-select");
@@ -59,7 +69,8 @@ async function updateConfig() {
     'selected_label': selectedLabel,
     'selected_threshold': selectedThreshold,
     'alert': selectedAlertPhone,
-    'hoot': selectedHoot
+    'hoot': selectedHoot,
+    'tracking': selectedTracking
   }
   console.log("CONFIG: ", config)
   const result = await fetch("{{ url_for('update_config') }}", {

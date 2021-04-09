@@ -29,14 +29,12 @@ lock = threading.Lock()
 engine = DetectionEngine('./tpu/mobilenet_ssd_v2_coco_quant_postprocess_edgetpu.tflite')
 labels = dataset_utils.read_label_file('./tpu/coco_labels.txt')
 
-# USER CONFIG
-selected_label = 'person'
-selected_threshold = 0.4
 config = {
-    'selected_label': selected_label,
-    'selected_threshold': selected_threshold,
+    'selected_label': 'person',
+    'selected_threshold': 0.4,
     'alert': False,
-    'hoot': False
+    'hoot': False,
+    'tracking': 'maximise'
 }
 
 app = Flask(__name__)
@@ -105,7 +103,6 @@ def index():
 @app.route("/config", methods=['POST'])
 def update_config():
     global config
-    print("REQUEST: ", request)
     new_config = request.get_json()
     config = new_config
     return jsonify(config)
@@ -121,7 +118,7 @@ def detect_objects():
         frame = vs.read()
 
         # TAG AND TRACK
-        frame, shift_difference, shift_direction = process_frame(frame, config["selected_label"], config["selected_threshold"])
+        labelled_frame, shift_difference, shift_direction = process_frame(frame, config["selected_label"], config["selected_threshold"])
 
         # ROTATE
         if shift_direction:
@@ -132,16 +129,16 @@ def detect_objects():
         else:
             p.stop()
             print("######")
-        cv2.putText(frame, f"PWM: {pwm}. {shift_direction}", (
+        cv2.putText(labelled_frame, f"PWM: {pwm}. {shift_direction}", (
                 90, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, box_color, 1)
 
         # FPS
         fps = round(1.0 / (time.time() - start_time), 0)
-        cv2.putText(frame, f"FPS: {fps}", (10, frame.shape[0] - 10),
+        cv2.putText(labelled_frame, f"FPS: {fps}", (10, frame.shape[0] - 10),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.35, box_color, 1)
 
         with lock:
-            outputFrame = cv2.resize(frame, (640, 480))
+            outputFrame = cv2.resize(labelled_frame, (640, 480))
 
 
 def generate():
