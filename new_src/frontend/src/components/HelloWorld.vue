@@ -17,7 +17,7 @@
               <v-card class="ma-2">
                 <v-card-title> Certainty </v-card-title>
                 <v-card-text>
-                  <v-slider v-model="config['threshold']" hint="Im a hint" max="100" min="0"></v-slider>
+                  <v-slider v-model="config['threshold']" thumb-label="always" max="100" min="0"></v-slider>
                 </v-card-text>
               </v-card>
             </v-col>

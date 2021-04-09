@@ -38,8 +38,8 @@ config = {
 }
 
 app = Flask(__name__,
-            static_folder = "./frontend/static",
-            template_folder = "./frontend")
+            static_folder = "./frontend/dist/static",
+            template_folder = "./frontend/dist/")
 cors = CORS(app)
 
 PI_IMAGE_WIDTH = 320
