@@ -179,9 +179,9 @@ def index():
 
 
 if __name__ == '__main__':
-    # t = threading.Thread(target=detect_objects)
-    # t.daemon = True
-    # t.start()
+    t = threading.Thread(target=detect_objects)
+    t.daemon = True
+    t.start()
     app.debug = True
     app.run(host='0.0.0.0',
             port=5000,
@@ -189,4 +189,4 @@ if __name__ == '__main__':
             threaded=True,
             use_reloader=False)
 
-# vs.stop()
+vs.stop()
