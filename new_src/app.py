@@ -162,6 +162,8 @@ def video_feed():
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def index(path):
+    if app.debug:
+        return requests.get('http://raspberrypi.local:5000/{}'.format(path)).text
     return render_template("index.html")
 
 if __name__ == '__main__':
