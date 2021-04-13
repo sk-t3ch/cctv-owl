@@ -7,6 +7,11 @@ Taken From:
 
 
 ## Get Started
+1. Install node 
+  * `curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -`
+  * `sudo apt install nodejs`
+1. Install frontend dependencies `npm i`
+1. Build frontend with your raspberry pi API `npm run build`
 1. Install python depencies `pip install -r requirements.txt`
 1. Install OS dependencies
   ```
