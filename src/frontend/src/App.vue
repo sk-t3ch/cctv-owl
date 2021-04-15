@@ -31,6 +31,7 @@
       <v-col cols="auto" class="text-none">
         <v-btn
           dark
+          target="_blank"
           href="https://t3chflicks.org"
           text
           class="text-none px-1 ml-0 mr-1 elevation-0"

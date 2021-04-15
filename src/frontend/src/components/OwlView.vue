@@ -17,8 +17,9 @@
                 <v-card-title> Labels </v-card-title>
                 <v-card-text>
                   <v-select
-                    color="accent"
+                    color="primary"
                     :items="labels"
+                    item-color="accent"
                     v-model="config['label']"
                   ></v-select>
                 </v-card-text>
@@ -29,7 +30,7 @@
                   <v-slider
                     v-model="config['threshold']"
                     thumb-label="always"
-                    thumb-color="accent"
+                    thumb-color="primary"
                     color="accent"
                     max="100"
                     min="0"
@@ -79,8 +80,9 @@
                 <v-card-title> Tracking </v-card-title>
                 <v-card-text>
                   <v-select
-                    color="accent"
+                    color="secondary"
                     :items="tracking"
+                    item-color="accent"
                     dark
                     v-model="config['tracking']"
                   ></v-select>
@@ -155,3 +157,6 @@ export default {
   },
 };
 </script>
+<style scoped>
+
+</style>
