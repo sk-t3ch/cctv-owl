@@ -53,7 +53,7 @@ vs = VideoStream(usePiCamera=True, resolution=(PI_IMAGE_WIDTH, PI_IMAGE_HEIGHT))
 # vs = VideoStream(src=0).start()
 time.sleep(2.0)
 
-def process_frame(frame, selected_label, selected_threshold=0.7, hoot=False, alert=False):
+def process_frame(frame, selected_label, selected_threshold=0.7, sound=False, alert=False):
     prep_img = Image.fromarray(frame.copy())
     detections = engine.detect_with_image(prep_img,
                                        threshold=selected_threshold,
@@ -69,7 +69,7 @@ def process_frame(frame, selected_label, selected_threshold=0.7, hoot=False, ale
         # print(len(filtered_detections))
 
         if len(filtered_detections) > 0:
-            if hoot:
+            if sound:
                 hoot()
             # if alert:
             #     alert()
