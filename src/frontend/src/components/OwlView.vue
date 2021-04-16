@@ -45,7 +45,7 @@
                 :src="piUrl + '/video_feed'"
                 style="overflow: unset"
                 class="videoFeed"
-                :aspect-ratio="3 / 2"
+                :aspect-ratio="4 / 3"
               >
                 <template v-slot:placeholder>
                   <v-row
@@ -62,7 +62,7 @@
               </v-img>
               <div v-else>
                 <v-card class="elevation-12" color="primary">
-                  <v-responsive :aspect-ratio="16/9">
+                  <v-responsive :aspect-ratio="4/3">
                     <tiny-owl />
                   </v-responsive>
                 </v-card>
@@ -126,10 +126,11 @@ export default {
   data() {
     return {
       labels: ["person", "bird", "book", "dog", "all"],
-      tracking: ["single", "maximise"],
+      tracking: ["manual", "single", "maximise"],
       config: {
         label: "person",
-        tracking: "single",
+        tracking: "manual",
+        pwm: 5,
         threshold: 0.7,
         hoot: false,
         alert: false,

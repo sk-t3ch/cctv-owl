@@ -12,6 +12,7 @@ from PIL import Image
 from utils import *
 from flask_cors import CORS, cross_origin
 import requests
+import hoot from make_sound
 
 import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BOARD)
@@ -32,7 +33,7 @@ labels = dataset_utils.read_label_file('./tpu/coco_labels.txt')
 config = {
     'label': 'person',
     'threshold': 0.7,
-    'tracking': 'single',
+    'tracking': 'manual',
     'alert': False,
     'hoot': False
 }
@@ -51,7 +52,7 @@ vs = VideoStream(usePiCamera=True, resolution=(PI_IMAGE_WIDTH, PI_IMAGE_HEIGHT))
 # vs = VideoStream(src=0).start()
 time.sleep(2.0)
 
-def process_frame(frame, selected_label, selected_threshold=0.7):
+def process_frame(frame, selected_label, selected_threshold=0.7, hoot=False, alert=False):
     prep_img = Image.fromarray(frame.copy())
     detections = engine.detect_with_image(prep_img,
                                        threshold=selected_threshold,
@@ -65,6 +66,13 @@ def process_frame(frame, selected_label, selected_threshold=0.7):
         else:
             filtered_detections = detections
         # print(len(filtered_detections))
+
+        if len(filtered_detections) > 0:
+            if hoot:
+                hoot()
+            # if alert:
+            #     alert()
+
 
         for obj in filtered_detections:
             object_name = labels[obj.label_id]
@@ -119,17 +127,19 @@ def detect_objects():
         frame = vs.read()
 
         # TAG AND TRACK
-        labelled_frame, shift_difference, shift_direction = process_frame(frame, config["label"], config["threshold"])
+        labelled_frame, shift_difference, shift_direction = process_frame(frame, config["label"], config["threshold"], config["hoot"], config["alert"])
 
         # ROTATE
-        if shift_direction:
+        if config["tracking"] == "manual":
+            pwm = config["pwm"]
+        elif config["tracking"] == "single" and shift_direction:
             print("changing", shift_direction, shift_difference)
             pwm = determine_update_movement(pwm, shift_direction, shift_difference)
-            p.start(pwm)
-            p.ChangeDutyCycle(pwm)
         else:
-            p.stop()
-            # print("######")
+            print("other tracking")
+        p.start(pwm)
+        p.ChangeDutyCycle(pwm)
+
         cv2.putText(labelled_frame, f"PWM: {pwm}. {shift_direction}", (
                 90, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, box_color, 1)
 
