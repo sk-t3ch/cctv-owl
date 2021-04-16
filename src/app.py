@@ -35,7 +35,8 @@ config = {
     'threshold': 0.7,
     'tracking': 'manual',
     'alert': False,
-    'hoot': False
+    'hoot': False,
+    'pwm': 7.5
 }
 
 app = Flask(__name__,
