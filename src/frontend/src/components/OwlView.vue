@@ -32,7 +32,8 @@
                     thumb-label="always"
                     thumb-color="primary"
                     color="accent"
-                    max="100"
+                    max="1"
+                    step="0.1"
                     min="0"
                   ></v-slider>
                 </v-card-text>
@@ -129,7 +130,7 @@ export default {
       config: {
         label: "person",
         tracking: "single",
-        threshold: 70,
+        threshold: 0.7,
         hoot: false,
         alert: false,
       },
