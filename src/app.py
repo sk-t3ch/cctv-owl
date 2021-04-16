@@ -1,5 +1,4 @@
 import os
-import json
 import time
 from imutils.video import VideoStream
 from flask import Flask, render_template, Response, request, jsonify, redirect, url_for
@@ -53,6 +52,7 @@ vs = VideoStream(usePiCamera=True, resolution=(PI_IMAGE_WIDTH, PI_IMAGE_HEIGHT))
 time.sleep(2.0)
 
 def process_frame(frame, selected_label, selected_threshold=0.7):
+    print(selected_label, selected_threshold)
     prep_img = Image.fromarray(frame.copy())
     detections = engine.detect_with_image(prep_img,
                                        threshold=selected_threshold,
@@ -106,7 +106,7 @@ def draw_label(frame, obj_name, obj_score, box_left, box_top, box_right, box_bot
 def update_config():
     global config
     new_config = request.get_json()
-    config = json.loads(new_config)
+    config = new_config
     return jsonify(config)
 
 
