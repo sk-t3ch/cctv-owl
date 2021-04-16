@@ -31,7 +31,7 @@ labels = dataset_utils.read_label_file('./tpu/coco_labels.txt')
 
 config = {
     'label': 'person',
-    'threshold': 0.4,
+    'threshold': 0.7,
     'tracking': 'single',
     'alert': False,
     'hoot': False
@@ -52,7 +52,6 @@ vs = VideoStream(usePiCamera=True, resolution=(PI_IMAGE_WIDTH, PI_IMAGE_HEIGHT))
 time.sleep(2.0)
 
 def process_frame(frame, selected_label, selected_threshold=0.7):
-    print(selected_label, selected_threshold)
     prep_img = Image.fromarray(frame.copy())
     detections = engine.detect_with_image(prep_img,
                                        threshold=selected_threshold,
@@ -65,7 +64,7 @@ def process_frame(frame, selected_label, selected_threshold=0.7):
             filtered_detections = list(filter(lambda obj: labels[obj.label_id]==selected_label, detections))
         else:
             filtered_detections = detections
-        print(len(filtered_detections))
+        # print(len(filtered_detections))
 
         for obj in filtered_detections:
             object_name = labels[obj.label_id]
@@ -130,7 +129,7 @@ def detect_objects():
             p.ChangeDutyCycle(pwm)
         else:
             p.stop()
-            print("######")
+            # print("######")
         cv2.putText(labelled_frame, f"PWM: {pwm}. {shift_direction}", (
                 90, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, box_color, 1)
 
