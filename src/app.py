@@ -30,11 +30,11 @@ engine = DetectionEngine('./tpu/mobilenet_ssd_v2_coco_quant_postprocess_edgetpu.
 labels = dataset_utils.read_label_file('./tpu/coco_labels.txt')
 
 config = {
-    'selected_label': 'person',
-    'selected_threshold': 0.4,
+    'label': 'person',
+    'threshold': 0.4,
+    'tracking': 'single',
     'alert': False,
-    'hoot': False,
-    'tracking': 'maximise'
+    'hoot': False
 }
 
 app = Flask(__name__,

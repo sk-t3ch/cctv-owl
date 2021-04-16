@@ -145,7 +145,7 @@ export default {
   },
   methods: {
     async updateConfig() {
-      const result = await fetch(this.pi_url + "/update_config", {
+      const result = await fetch(this.piUrl + "/update_config", {
         method: "POST",
         body: JSON.stringify(this.config),
         headers: {
