@@ -1,4 +1,5 @@
 import os
+import json
 import time
 from imutils.video import VideoStream
 from flask import Flask, render_template, Response, request, jsonify, redirect, url_for
@@ -105,7 +106,7 @@ def draw_label(frame, obj_name, obj_score, box_left, box_top, box_right, box_bot
 def update_config():
     global config
     new_config = request.get_json()
-    config = new_config
+    config = json.loads(new_config)
     return jsonify(config)
 
 
