@@ -87,6 +87,17 @@
                     dark
                     v-model="config['tracking']"
                   ></v-select>
+                  <v-slider
+                    v-show="config['tracking'] === 'manual'"
+                    v-model="config['pwm']"
+                    thumb-label="always"
+                    thumb-color="primary"
+                    label="position"
+                    color="accent"
+                    max="12.5"
+                    step="0.1"
+                    min="2.5"
+                  ></v-slider>
                 </v-card-text>
               </v-card>
 
