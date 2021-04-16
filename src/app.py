@@ -119,7 +119,7 @@ def detect_objects():
         frame = vs.read()
 
         # TAG AND TRACK
-        labelled_frame, shift_difference, shift_direction = process_frame(frame, config["selected_label"], config["selected_threshold"])
+        labelled_frame, shift_difference, shift_direction = process_frame(frame, config["label"], config["threshold"])
 
         # ROTATE
         if shift_direction:
