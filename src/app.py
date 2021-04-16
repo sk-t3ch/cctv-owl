@@ -12,7 +12,7 @@ from PIL import Image
 from utils import *
 from flask_cors import CORS, cross_origin
 import requests
-import hoot from make_sound
+from make_sound import hoot 
 
 import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BOARD)
