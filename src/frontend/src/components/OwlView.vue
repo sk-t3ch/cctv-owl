@@ -45,7 +45,7 @@
                 :src="piUrl + '/video_feed'"
                 style="overflow: unset"
                 class="videoFeed"
-                :aspect-ratio="4 / 3"
+                :aspect-ratio="16 / 9"
               >
                 <template v-slot:placeholder>
                   <v-row
