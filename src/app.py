@@ -13,11 +13,12 @@ from utils import *
 from flask_cors import CORS, cross_origin
 import requests
 from make_sound import hoot 
-from tracker import *
 
-# Create tracker object
-tracker = EuclideanDistTracker()
-
+from motrackers import CentroidTracker #, CentroidKF_Tracker, SORT, IOUTracker
+# from motrackers.utils import draw_tracks
+# from tracker import *
+# # Create tracker object
+tracker = CentroidTracker(max_lost=0, tracker_output_format='mot_challenge')
 
 import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BOARD)
@@ -79,23 +80,32 @@ def process_frame(frame, selected_label, selected_threshold=0.7, sound=False, al
             # if alert:
             #     alert()
 
+
+
+        # map detections trackers
+        bboxes = list(map(lambda obj: obj.bounding_box.flatten().tolist(), filtered_detections))
+        confidences = list(map(lambda obj: obj.score, filtered_detections))
+        class_ids = list(map(lambda obj: obj.label_id, filtered_detections))
+
+        # boxes_ids = tracker.update(bboxes, confidences, class_ids)
         boxes_ids = tracker.update(detections)
-        for box_id in boxes_ids:
-            x, y, w, h, id = box_id
-            cv2.putText(roi, str(id), (x, y - 15), cv2.FONT_HERSHEY_PLAIN, 2, (255, 0, 0), 2)
-            cv2.rectangle(roi, (x, y), (x + w, y + h), (0, 255, 0), 3)
+        frame = draw_tracks(frame, tracks)
+        # for box_id in boxes_ids:
+        #     x, y, w, h, id = box_id
+        #     cv2.putText(roi, str(id), (x, y - 15), cv2.FONT_HERSHEY_PLAIN, 2, (255, 0, 0), 2)
+        #     cv2.rectangle(roi, (x, y), (x + w, y + h), (0, 255, 0), 3)
 
 
-        for obj in filtered_detections:
-            object_name = labels[obj.label_id]
-            box = obj.bounding_box.flatten().tolist()
-            box_left = int(box[0])
-            box_top = int(box[1])
-            box_right = int(box[2])
-            box_bottom = int(box[3])
+        # for obj in filtered_detections:
+        #     object_name = labels[obj.label_id]
+        #     box = obj.bounding_box.flatten().tolist()
+        #     box_left = int(box[0])
+        #     box_top = int(box[1])
+        #     box_right = int(box[2])
+        #     box_bottom = int(box[3])
 
-            draw_label(frame, object_name, obj.score, box_left, box_top, box_right, box_bottom)
-            shift_difference, shift_direction = determine_shift(frame.shape[0], box_left, box_right)
+        #     draw_label(frame, object_name, obj.score, box_left, box_top, box_right, box_bottom)
+        #     shift_difference, shift_direction = determine_shift(frame.shape[0], box_left, box_right)
 
     return frame, shift_difference, shift_direction
 
