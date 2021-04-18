@@ -156,7 +156,8 @@ def detect_objects():
 
             tracks = tracker.update(bboxes, confidences, class_ids)
             frame = draw_tracks(frame, tracks)
-            centroid = get_centroid(bboxes)
+            bbox_centroids = get_centroid(bboxes)
+            centroid = np.mean(bbox_centroids, axis=0)
             shift_difference, shift_direction = determine_shift(frame.shape[0], centroid[0])
             print("changing", shift_direction, shift_difference)
             pwm = determine_update_movement(pwm, shift_direction, shift_difference)
