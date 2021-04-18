@@ -125,6 +125,7 @@ def update_config():
 def detect_objects():
     global cap, outputFrame, lock, config
     pwm = 7.5
+    old_pwm = 7.5
     p.start(5)
 
     while True:
@@ -159,8 +160,14 @@ def detect_objects():
             pwm = determine_update_movement(pwm, shift_direction, shift_difference)
         else:
             print("other tracking")
-        p.start(pwm)
-        p.ChangeDutyCycle(pwm)
+
+        # check for diff in pwm
+        if owl_pwm != pwm:
+            p.start(pwm)
+            p.ChangeDutyCycle(pwm)
+        else:
+            p.stop()
+        old_pwm = pwm
 
         cv2.putText(frame, f"PWM: {pwm}. {shift_direction}", (
                 90, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, box_color, 1)
