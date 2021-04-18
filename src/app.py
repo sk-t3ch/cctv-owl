@@ -15,7 +15,7 @@ import requests
 from make_sound import hoot 
 
 from motrackers import CentroidTracker #, CentroidKF_Tracker, SORT, IOUTracker
-# from motrackers.utils import draw_tracks
+from motrackers.utils import draw_tracks
 # from tracker import *
 # # Create tracker object
 tracker = CentroidTracker(max_lost=0, tracker_output_format='mot_challenge')
