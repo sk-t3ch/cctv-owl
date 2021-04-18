@@ -162,7 +162,7 @@ def detect_objects():
             print("other tracking")
 
         # check for diff in pwm
-        if owl_pwm != pwm:
+        if old_pwm != pwm:
             p.start(pwm)
             p.ChangeDutyCycle(pwm)
         else:
