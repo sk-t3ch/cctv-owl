@@ -160,11 +160,13 @@ def detect_objects():
             print("other tracking")
 
         # check for diff in pwm
-        if old_pwm != pwm:
-            p.start(pwm)
-            p.ChangeDutyCycle(pwm)
-        else:
-            p.stop()
+        # if old_pwm != pwm:
+        #     p.start(pwm)
+        #     p.ChangeDutyCycle(pwm)
+        # else:
+        #     p.stop()
+        p.start(pwm)
+        p.ChangeDutyCycle(pwm)
         old_pwm = pwm
 
         cv2.putText(frame, f"PWM: {pwm}. {shift_direction}", (
