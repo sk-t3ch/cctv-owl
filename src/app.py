@@ -149,7 +149,7 @@ def detect_objects():
         # ROTATE
         if config["tracking"] == "manual":
             pwm = config["pwm"]
-        elif config["tracking"] == "single" and shift_direction:
+        elif config["tracking"] == "single":
             bboxes = np.array(list(map(lambda obj: np.array(obj.bounding_box.flatten()), detections)))
             confidences = list(map(lambda obj: obj.score, detections))
             class_ids = list(map(lambda obj: obj.label_id, detections))
