@@ -13,6 +13,11 @@ from utils import *
 from flask_cors import CORS, cross_origin
 import requests
 from make_sound import hoot 
+from tracker import *
+
+# Create tracker object
+tracker = EuclideanDistTracker()
+
 
 import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BOARD)
@@ -73,6 +78,12 @@ def process_frame(frame, selected_label, selected_threshold=0.7, sound=False, al
                 hoot()
             # if alert:
             #     alert()
+
+        boxes_ids = tracker.update(detections)
+        for box_id in boxes_ids:
+            x, y, w, h, id = box_id
+            cv2.putText(roi, str(id), (x, y - 15), cv2.FONT_HERSHEY_PLAIN, 2, (255, 0, 0), 2)
+            cv2.rectangle(roi, (x, y), (x + w, y + h), (0, 255, 0), 3)
 
 
         for obj in filtered_detections:
