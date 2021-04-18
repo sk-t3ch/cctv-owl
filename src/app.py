@@ -87,8 +87,8 @@ def process_frame(frame, selected_label, selected_threshold=0.7, sound=False, al
         confidences = list(map(lambda obj: obj.score, filtered_detections))
         class_ids = list(map(lambda obj: obj.label_id, filtered_detections))
 
-        # boxes_ids = tracker.update(bboxes, confidences, class_ids)
-        boxes_ids = tracker.update(detections)
+        tracks = tracker.update(bboxes, confidences, class_ids)
+        # boxes_ids = tracker.update(detections)
         frame = draw_tracks(frame, tracks)
         # for box_id in boxes_ids:
         #     x, y, w, h, id = box_id
