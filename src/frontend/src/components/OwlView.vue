@@ -92,6 +92,8 @@
                     v-model="config['pwm']"
                     thumb-label="always"
                     thumb-color="primary"
+                    prepend-icon="mdi-chevron-left"
+                    append-icon="mdi-chevron-right"
                     label="position"
                     color="accent"
                     max="12.5"
