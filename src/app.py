@@ -144,12 +144,10 @@ def detect_objects():
             box_bottom = int(box[3])
             draw_label(frame, object_name, obj.score, box_left, box_top, box_right, box_bottom)
 
-        shift_direction, shift_difference = None, None
-
         # ROTATE
         if config["tracking"] == "manual":
             pwm = config["pwm"]
-        elif config["tracking"] == "single":
+        elif config["tracking"] == "single" and detections:
             bboxes = np.array(list(map(lambda obj: np.array(obj.bounding_box.flatten()), detections)))
             confidences = list(map(lambda obj: obj.score, detections))
             class_ids = list(map(lambda obj: obj.label_id, detections))
