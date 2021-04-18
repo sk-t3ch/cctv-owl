@@ -67,48 +67,30 @@ def process_frame(frame, selected_label, selected_threshold=0.7, sound=False, al
                                        keep_aspect_ratio=True,
                                        relative_coord=False,
                                        top_k=10)
-    shift_difference, shift_direction = 0, 0 # To be removed after tracking
-    if detections:
-        if selected_label != "all":
-            filtered_detections = list(filter(lambda obj: labels[obj.label_id]==selected_label, detections))
-        else:
-            filtered_detections = detections
-        # print(len(filtered_detections))
+    if detections and selected_label != "all":
+        detections = list(filter(lambda obj: labels[obj.label_id]==selected_label, detections))
+    return detections
 
-        if len(filtered_detections) > 0:
-            if sound:
-                hoot()
-            # if alert:
-            #     alert()
+# def thing():
+#     if len(filtered_detections) > 0:
+#         if sound:
+#             hoot()
+#         # if alert:
+#         #     alert()
 
 
+#     # check type of tracking
 
-        # map detections trackers
-        bboxes = np.array(list(map(lambda obj: np.array(obj.bounding_box.flatten()), filtered_detections)))
-        confidences = list(map(lambda obj: obj.score, filtered_detections))
-        class_ids = list(map(lambda obj: obj.label_id, filtered_detections))
+#     # map detections trackers
+#     bboxes = np.array(list(map(lambda obj: np.array(obj.bounding_box.flatten()), filtered_detections)))
+#     confidences = list(map(lambda obj: obj.score, filtered_detections))
+#     class_ids = list(map(lambda obj: obj.label_id, filtered_detections))
 
-        tracks = tracker.update(bboxes, confidences, class_ids)
-        # boxes_ids = tracker.update(detections)
-        frame = draw_tracks(frame, tracks)
-        # for box_id in boxes_ids:
-        #     x, y, w, h, id = box_id
-        #     cv2.putText(roi, str(id), (x, y - 15), cv2.FONT_HERSHEY_PLAIN, 2, (255, 0, 0), 2)
-        #     cv2.rectangle(roi, (x, y), (x + w, y + h), (0, 255, 0), 3)
+#     tracks = tracker.update(bboxes, confidences, class_ids)
+#     frame = draw_tracks(frame, tracks)
+#     #     shift_difference, shift_direction = determine_shift(frame.shape[0], box_left, box_right)
 
-
-        # for obj in filtered_detections:
-        #     object_name = labels[obj.label_id]
-        #     box = obj.bounding_box.flatten().tolist()
-        #     box_left = int(box[0])
-        #     box_top = int(box[1])
-        #     box_right = int(box[2])
-        #     box_bottom = int(box[3])
-
-        #     draw_label(frame, object_name, obj.score, box_left, box_top, box_right, box_bottom)
-        #     shift_difference, shift_direction = determine_shift(frame.shape[0], box_left, box_right)
-
-    return frame, shift_difference, shift_direction
+#     return frame, shift_difference, shift_direction
 
 def draw_label(frame, obj_name, obj_score, box_left, box_top, box_right, box_bottom):
     cv2.rectangle(frame, (box_left, box_top),
@@ -149,9 +131,26 @@ def detect_objects():
         start_time = time.time()
         frame = vs.read()
 
-        # TAG AND TRACK
-        labelled_frame, shift_difference, shift_direction = process_frame(frame, config["label"], config["threshold"], config["hoot"], config["alert"])
+        detections = process_frame(frame, config["label"], config["threshold"])
+        bboxes = np.array(list(map(lambda obj: np.array(obj.bounding_box.flatten()), detections)))
+        confidences = list(map(lambda obj: obj.score, detections))
+        class_ids = list(map(lambda obj: obj.label_id, detections))
 
+        tracks = tracker.update(bboxes, confidences, class_ids)
+        for obj in detections:
+            object_name = labels[obj.label_id]
+            box = obj.bounding_box.flatten().tolist()
+            box_left = int(box[0])
+            box_top = int(box[1])
+            box_right = int(box[2])
+            box_bottom = int(box[3])
+            draw_label(frame, object_name, obj.score, box_left, box_top, box_right, box_bottom)
+
+        frame = draw_tracks(frame, tracks)
+
+
+        # labelled_frame, shift_difference, shift_direction = process_frame(frame, config["label"], config["threshold"], config["hoot"], config["alert"])
+        shift_direction, shift_difference = None, None
         # ROTATE
         if config["tracking"] == "manual":
             pwm = config["pwm"]
@@ -163,16 +162,16 @@ def detect_objects():
         p.start(pwm)
         p.ChangeDutyCycle(pwm)
 
-        cv2.putText(labelled_frame, f"PWM: {pwm}. {shift_direction}", (
+        cv2.putText(frame, f"PWM: {pwm}. {shift_direction}", (
                 90, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, box_color, 1)
 
         # FPS
         fps = round(1.0 / (time.time() - start_time), 0)
-        cv2.putText(labelled_frame, f"FPS: {fps}", (10, frame.shape[0] - 10),
+        cv2.putText(frame, f"FPS: {fps}", (10, frame.shape[0] - 10),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.35, box_color, 1)
 
         with lock:
-            outputFrame = cv2.resize(labelled_frame, (640, 480))
+            outputFrame = cv2.resize(frame, (640, 480))
 
 
 def generate():
