@@ -83,7 +83,7 @@ def process_frame(frame, selected_label, selected_threshold=0.7, sound=False, al
 
 
         # map detections trackers
-        bboxes = list(map(lambda obj: obj.bounding_box.flatten(), filtered_detections))
+        bboxes = list(map(lambda obj: np.array(obj.bounding_box.flatten()), filtered_detections))
         confidences = list(map(lambda obj: obj.score, filtered_detections))
         class_ids = list(map(lambda obj: obj.label_id, filtered_detections))
 
