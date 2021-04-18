@@ -129,6 +129,7 @@ def detect_objects():
     pwm = 7.5
     old_pwm = 7.5
     p.start(5)
+    shift_difference, shift_direction = None, None
 
     while True:
         start_time = time.time()
