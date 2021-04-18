@@ -1,9 +1,9 @@
 import math
 
 
-def determine_shift(frame_width, object_left, object_right):
+def determine_shift(frame_width, object_center):
     frame_center = frame_width / 2
-    object_center = object_right - ((object_right - object_left)/2)
+    # object_center = object_right - ((object_right - object_left)/2)
     center_window = frame_width / 8
     difference = frame_center - object_center
     direction = math.copysign(1, difference)
