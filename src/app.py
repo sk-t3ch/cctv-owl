@@ -17,8 +17,12 @@ import numpy as np
 
 from motrackers import CentroidTracker #, CentroidKF_Tracker, SORT, IOUTracker
 from motrackers.utils import draw_tracks
+from motrackers.utils.misc import get_centroid
 tracker = CentroidTracker(max_lost=0, tracker_output_format='mot_challenge')
-
+# tracker = CentroidKF_Tracker(max_lost=0, tracker_output_format='mot_challenge')
+# tracker = SORT(max_lost=3, tracker_output_format='mot_challenge', iou_threshold=0.3)
+# tracker = IOUTracker(max_lost=2, iou_threshold=0.5, min_detection_confidence=0.4, max_detection_confidence=0.7,
+#                     tracker_output_format='mot_challenge')
 import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
@@ -131,11 +135,6 @@ def detect_objects():
         frame = vs.read()
 
         detections = process_frame(frame, config["label"], config["threshold"])
-        bboxes = np.array(list(map(lambda obj: np.array(obj.bounding_box.flatten()), detections)))
-        confidences = list(map(lambda obj: obj.score, detections))
-        class_ids = list(map(lambda obj: obj.label_id, detections))
-
-        tracks = tracker.update(bboxes, confidences, class_ids)
         for obj in detections:
             object_name = labels[obj.label_id]
             box = obj.bounding_box.flatten().tolist()
@@ -145,15 +144,20 @@ def detect_objects():
             box_bottom = int(box[3])
             draw_label(frame, object_name, obj.score, box_left, box_top, box_right, box_bottom)
 
-        frame = draw_tracks(frame, tracks)
-
-
-        # labelled_frame, shift_difference, shift_direction = process_frame(frame, config["label"], config["threshold"], config["hoot"], config["alert"])
         shift_direction, shift_difference = None, None
+
         # ROTATE
         if config["tracking"] == "manual":
             pwm = config["pwm"]
         elif config["tracking"] == "single" and shift_direction:
+            bboxes = np.array(list(map(lambda obj: np.array(obj.bounding_box.flatten()), detections)))
+            confidences = list(map(lambda obj: obj.score, detections))
+            class_ids = list(map(lambda obj: obj.label_id, detections))
+
+            tracks = tracker.update(bboxes, confidences, class_ids)
+            frame = draw_tracks(frame, tracks)
+            centroid = get_centroid(bboxes)
+            shift_difference, shift_direction = determine_shift(frame.shape[0], centroid[0])
             print("changing", shift_direction, shift_difference)
             pwm = determine_update_movement(pwm, shift_direction, shift_difference)
         else:
