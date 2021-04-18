@@ -13,6 +13,7 @@ from utils import *
 from flask_cors import CORS, cross_origin
 import requests
 from make_sound import hoot 
+import numpy as np
 
 from motrackers import CentroidTracker #, CentroidKF_Tracker, SORT, IOUTracker
 from motrackers.utils import draw_tracks
