@@ -17,15 +17,13 @@ import numpy as np
 
 from motrackers import CentroidTracker #, CentroidKF_Tracker, SORT, IOUTracker
 from motrackers.utils import draw_tracks
-# from tracker import *
-# # Create tracker object
 tracker = CentroidTracker(max_lost=0, tracker_output_format='mot_challenge')
 
 import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
 GPIO.setup(12, GPIO.OUT)
-p = GPIO.PWM(12, 50)
+p = GPIO.PWM(12, 100)
 pwm = 7.5
 
 
