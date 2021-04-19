@@ -45,7 +45,7 @@
                 :src="piUrl + '/video_feed'"
                 style="overflow: unset"
                 class="videoFeed"
-                :aspect-ratio="16 / 9"
+                :aspect-ratio="4 / 3"
               >
                 <template v-slot:placeholder>
                   <v-row
@@ -112,12 +112,6 @@
                     v-model="config['hoot']"
                     label="Hoot"
                   ></v-switch>
-                  <v-switch
-                    inset
-                    color="accent"
-                    v-model="config['alert']"
-                    label="Alert"
-                  ></v-switch>
                 </v-card-text>
               </v-card>
             </v-col>
@@ -146,7 +140,6 @@ export default {
         pwm: 5,
         threshold: 0.7,
         hoot: false,
-        alert: false,
       },
     };
   },

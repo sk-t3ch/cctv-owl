@@ -14,6 +14,7 @@ from flask_cors import CORS, cross_origin
 import requests
 from make_sound import hoot 
 import numpy as np
+import RPi.GPIO as GPIO
 
 from motrackers import CentroidTracker #, CentroidKF_Tracker, SORT, IOUTracker
 from motrackers.utils import draw_tracks
@@ -23,19 +24,26 @@ tracker = CentroidTracker(max_lost=0, tracker_output_format='mot_challenge')
 # tracker = SORT(max_lost=3, tracker_output_format='mot_challenge', iou_threshold=0.3)
 # tracker = IOUTracker(max_lost=2, iou_threshold=0.5, min_detection_confidence=0.4, max_detection_confidence=0.7,
 #                     tracker_output_format='mot_challenge')
-import RPi.GPIO as GPIO
+
+MOTOR_PIN = 12
+PI_IMAGE_WIDTH = 320
+PI_IMAGE_HEIGHT = 240
+OUTPUT_IMAGE_WIDTH = 640
+OUTPUT_IMAGE_HEIGHT = 480
+
+box_color = (255, 0, 0) # green
+label_text_color = (255, 255, 255) # white
+
 GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
-GPIO.setup(12, GPIO.OUT)
-p = GPIO.PWM(12, 50)
+GPIO.setup(MOTOR_PIN, GPIO.OUT)
+p = GPIO.PWM(MOTOR_PIN, 50)
 pwm = 7.5
-
-
-box_color = (0, 0, 255)
-label_text_color = (255, 255, 255)
 
 outputFrame = None
 lock = threading.Lock()
+
+# CORAL MODEL
 engine = DetectionEngine('./tpu/mobilenet_ssd_v2_coco_quant_postprocess_edgetpu.tflite')
 labels = dataset_utils.read_label_file('./tpu/coco_labels.txt')
 
@@ -43,7 +51,6 @@ config = {
     'label': 'person',
     'threshold': 0.7,
     'tracking': 'manual',
-    'alert': False,
     'hoot': False,
     'pwm': 7.5
 }
@@ -52,17 +59,13 @@ app = Flask(__name__,
             static_folder = "./frontend/dist/static",
             template_folder = "./frontend/dist"
             )
-
-
 cors = CORS(app)
 
-PI_IMAGE_WIDTH = 320
-PI_IMAGE_HEIGHT = 240
 vs = VideoStream(usePiCamera=True, resolution=(PI_IMAGE_WIDTH, PI_IMAGE_HEIGHT)).start()
 # vs = VideoStream(src=0).start()
 time.sleep(2.0)
 
-def process_frame(frame, selected_label, selected_threshold=0.7, sound=False, alert=False):
+def process_frame(frame, selected_label, selected_threshold=0.7):
     prep_img = Image.fromarray(frame.copy())
     detections = engine.detect_with_image(prep_img,
                                        threshold=selected_threshold,
@@ -73,26 +76,6 @@ def process_frame(frame, selected_label, selected_threshold=0.7, sound=False, al
         detections = list(filter(lambda obj: labels[obj.label_id]==selected_label, detections))
     return detections
 
-# def thing():
-#     if len(filtered_detections) > 0:
-#         if sound:
-#             hoot()
-#         # if alert:
-#         #     alert()
-
-
-#     # check type of tracking
-
-#     # map detections trackers
-#     bboxes = np.array(list(map(lambda obj: np.array(obj.bounding_box.flatten()), filtered_detections)))
-#     confidences = list(map(lambda obj: obj.score, filtered_detections))
-#     class_ids = list(map(lambda obj: obj.label_id, filtered_detections))
-
-#     tracks = tracker.update(bboxes, confidences, class_ids)
-#     frame = draw_tracks(frame, tracks)
-#     #     shift_difference, shift_direction = determine_shift(frame.shape[0], box_left, box_right)
-
-#     return frame, shift_difference, shift_direction
 
 def draw_label(frame, obj_name, obj_score, box_left, box_top, box_right, box_bottom):
     cv2.rectangle(frame, (box_left, box_top),
@@ -126,18 +109,20 @@ def update_config():
 
 def detect_objects():
     global cap, outputFrame, lock, config
+    shift_difference, shift_direction = None, None
     pwm = 7.5
     old_pwm = 7.5
     p.start(5)
-    shift_difference, shift_direction = None, None
 
     while True:
         start_time = time.time()
         frame = vs.read()
 
         detections = process_frame(frame, config["label"], config["threshold"])
+        
         for obj in detections:
             object_name = labels[obj.label_id]
+            # if detections do the hoot thing
             box = obj.bounding_box.flatten().tolist()
             box_left = int(box[0])
             box_top = int(box[1])
@@ -145,29 +130,23 @@ def detect_objects():
             box_bottom = int(box[3])
             draw_label(frame, object_name, obj.score, box_left, box_top, box_right, box_bottom)
 
-        # ROTATE
         if config["tracking"] != "manual":
             if detections:
-                # bboxes = np.array(list(map(lambda obj: np.array(obj.bounding_box.flatten()), detections)))
                 bboxes = np.array([obj.bounding_box.flatten() for obj in detections])
-                # confidences = list(map(lambda obj: obj.score, detections))
                 confidences = [obj.score for obj in detections]
-                # class_ids = list(map(lambda obj: obj.label_id, detections))
                 class_ids = [obj.label_id for obj in detections]
                 tracks = tracker.update(bboxes, confidences, class_ids)
                 # (<frame>, <id>, <bb_left>, <bb_top>, <bb_width>, <bb_height>, <conf>, <x>, <y>, <z>)
                 frame = draw_tracks(frame, tracks)
                 if config["tracking"] == "centroid":
-                    # tracked_bboxes = np.array(list(map(lambda obj: [obj[2], obj[3], obj[4], obj[5]], tracks)))
+                    #                           (xmin,   ymin,   width,  height)
                     tracked_bboxes = np.array([ (obj[2], obj[3], obj[4], obj[5]) for obj in tracks ])
-                    # (xmin, ymin, width, height)
                     tracked_bbox_centroids = get_centroid(tracked_bboxes)
                     centroid = np.mean(tracked_bbox_centroids, axis=0)
                 elif config["tracking"] == "single":
                     latest_track = max(track[1] for track in tracks) # tracking_id
                     track = latest_track
                     tracked_bbox = [track[2], track[3], track[4], track[5]]
-                    # (xmin, ymin, width, height)
                     centroid = get_centroid(tracked_bboxes)
                 shift_difference, shift_direction = determine_shift(frame.shape[0], centroid[0])
                 print("changing", shift_direction, shift_difference)
@@ -195,7 +174,7 @@ def detect_objects():
                     cv2.FONT_HERSHEY_SIMPLEX, 0.35, box_color, 1)
 
         with lock:
-            outputFrame = cv2.resize(frame, (640, 480))
+            outputFrame = cv2.resize(frame, (OUTPUT_IMAGE_WIDTH, OUTPUT_IMAGE_HEIGHT))
 
 
 def generate():
