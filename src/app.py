@@ -146,25 +146,35 @@ def detect_objects():
             draw_label(frame, object_name, obj.score, box_left, box_top, box_right, box_bottom)
 
         # ROTATE
-        if config["tracking"] == "manual":
-            pwm = config["pwm"]
-        elif config["tracking"] == "single" and detections:
-            bboxes = np.array(list(map(lambda obj: np.array(obj.bounding_box.flatten()), detections)))
-            confidences = list(map(lambda obj: obj.score, detections))
-            class_ids = list(map(lambda obj: obj.label_id, detections))
-
-            tracks = tracker.update(bboxes, confidences, class_ids)
-            # (<frame>, <id>, <bb_left>, <bb_top>, <bb_width>, <bb_height>, <conf>, <x>, <y>, <z>)
-            frame = draw_tracks(frame, tracks)
-            tracked_bboxes = np.array(list(map(lambda obj: [obj[2], obj[3], obj[4], obj[5]], tracks)))
-            # (xmin, ymin, width, height)
-            tracked_bbox_centroids = get_centroid(tracked_bboxes)
-            centroid = np.mean(tracked_bbox_centroids, axis=0)
-            shift_difference, shift_direction = determine_shift(frame.shape[0], centroid[0])
-            print("changing", shift_direction, shift_difference)
-            pwm = determine_update_movement(pwm, shift_direction, shift_difference)
+        if config["tracking"] != "manual":
+            if detections:
+                # bboxes = np.array(list(map(lambda obj: np.array(obj.bounding_box.flatten()), detections)))
+                bboxes = np.array([obj.bounding_box.flatten() for obj in detections])
+                # confidences = list(map(lambda obj: obj.score, detections))
+                confidences = [obj.score for obj in detections]
+                # class_ids = list(map(lambda obj: obj.label_id, detections))
+                class_ids = [obj.label_id for obj in detections]
+                tracks = tracker.update(bboxes, confidences, class_ids)
+                # (<frame>, <id>, <bb_left>, <bb_top>, <bb_width>, <bb_height>, <conf>, <x>, <y>, <z>)
+                frame = draw_tracks(frame, tracks)
+                if config["tracking"] == "centroid":
+                    # tracked_bboxes = np.array(list(map(lambda obj: [obj[2], obj[3], obj[4], obj[5]], tracks)))
+                    tracked_bboxes = np.array([ (obj[2], obj[3], obj[4], obj[5]) for obj in tracks ])
+                    # (xmin, ymin, width, height)
+                    tracked_bbox_centroids = get_centroid(tracked_bboxes)
+                    centroid = np.mean(tracked_bbox_centroids, axis=0)
+                elif config["tracking"] == "single":
+                    latest_track = max(track['track_id'] for track in tracks)
+                    track = latest_track
+                    tracked_bbox = [track[2], track[3], track[4], track[5]]
+                    # (xmin, ymin, width, height)
+                    centroid = get_centroid(tracked_bboxes)
+                shift_difference, shift_direction = determine_shift(frame.shape[0], centroid[0])
+                print("changing", shift_direction, shift_difference)
+                pwm = determine_update_movement(pwm, shift_direction, shift_difference)
         else:
-            print("other tracking")
+            pwm = config["pwm"]
+
 
         # check for diff in pwm
         # if old_pwm != pwm:
