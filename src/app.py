@@ -148,7 +148,7 @@ def detect_objects():
                     latest_track = max(tracks,  key=lambda t: t[1]) # tracking_id
                     track = latest_track
                     tracked_bbox = [track[2], track[3], track[4], track[5]]
-                    centroid = get_centroid(tracked_bboxes)
+                    centroid = get_centroid(tracked_bbox)
                     print("centroid", centroid)
                 shift_difference, shift_direction = determine_shift(frame.shape[0], centroid[0])
                 print("changing", shift_direction, shift_difference)
