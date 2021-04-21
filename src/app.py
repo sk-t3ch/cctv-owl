@@ -26,8 +26,8 @@ tracker = CentroidTracker(max_lost=0, tracker_output_format='mot_challenge')
 #                     tracker_output_format='mot_challenge')
 
 MOTOR_PIN = 12
-PI_IMAGE_WIDTH = 640
-PI_IMAGE_HEIGHT = 480
+PI_IMAGE_WIDTH = 1280
+PI_IMAGE_HEIGHT = 960
 OUTPUT_IMAGE_WIDTH = 640
 OUTPUT_IMAGE_HEIGHT = 480
 
