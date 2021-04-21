@@ -149,6 +149,7 @@ def detect_objects():
                     track = latest_track
                     tracked_bbox = [track[2], track[3], track[4], track[5]]
                     centroid = get_centroid(tracked_bboxes)
+                    print("centroid", centroid)
                 shift_difference, shift_direction = determine_shift(frame.shape[0], centroid[0])
                 print("changing", shift_direction, shift_difference)
                 pwm = determine_update_movement(pwm, shift_direction, shift_difference)
