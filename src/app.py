@@ -144,6 +144,8 @@ def detect_objects():
                     tracked_bbox_centroids = get_centroid(tracked_bboxes)
                     centroid = np.mean(tracked_bbox_centroids, axis=0)
                 elif config["tracking"] == "single":
+                    print(tracks)
+                    print(track[1])
                     latest_track = max(track[1] for track in tracks) # tracking_id
                     track = latest_track
                     tracked_bbox = [track[2], track[3], track[4], track[5]]
