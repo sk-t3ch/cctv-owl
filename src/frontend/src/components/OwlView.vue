@@ -139,7 +139,7 @@ export default {
   data() {
     return {
       labels: ["person", "bird", "book", "dog", "all"],
-      tracking: ["manual", "centroid", "maximise"],
+      tracking: ["manual", "centroid", "single"],
       config: {
         label: "person",
         tracking: "manual",
