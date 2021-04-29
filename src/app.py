@@ -204,6 +204,7 @@ def index():
     return render_template("index.html")
 
 if __name__ == '__main__':
+    
     t = threading.Thread(target=detect_objects)
     t.daemon = True
     t.start()
